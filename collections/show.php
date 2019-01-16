@@ -25,7 +25,7 @@ $description = metadata('collection', array('Dublin Core', 'Description'));
 
 if ($description) {
     if (strpos($description, '<p>') === false) {
-        echo '<p class="text-lead">' . $description . '</p>' . PHP_EOL;
+        echo '<p>' . $description . '</p>' . PHP_EOL;
     } else {
         echo $description . PHP_EOL;
     }
