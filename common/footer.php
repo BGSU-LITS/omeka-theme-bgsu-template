@@ -95,7 +95,7 @@ bgsu_template.setup({
 bgsu_template.toggle("[data-toggle^=toggle-]");
 bgsu_tippy.setup("a[title]", {arrow: true, placement: "right"});
 
-if (window.bgsu_flickity.setup) {
+if (window.bgsu_flickity) {
     window.bgsu_flickity.setup(".records", {lazyLoad: 3});
 }
 <?php
