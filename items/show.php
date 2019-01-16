@@ -69,7 +69,7 @@ $count = 1;
 foreach ($item->Files as $file) {
     echo '<div class="record">' . PHP_EOL;
 
-    echo file_markup(
+    $markup = file_markup(
         $file,
         array(
             'imageSize' => 'fullsize',
@@ -78,6 +78,29 @@ foreach ($item->Files as $file) {
         ),
         array()
     );
+
+    $watermark = get_theme_option('watermark_images') !== '0';
+
+    $mime_types = array(
+        'image/gif',
+        'image/jpeg',
+        'image/png'
+    );
+
+    if ($watermark && in_array($file->mime_type, $mime_types)) {
+        $preg = '{//([^/]+)/((.*/)?files/(fullsize|original)/)}';
+        $replace = '//$1/w/$2';
+
+        if (preg_match($preg, $markup, $matches)) {
+            if ($matches[1] === 'digitalgallery.bgsu.edu') {
+                $replace = '//lib.bgsu.edu/w/digitalgallery/$2';
+            }
+        }
+
+        $markup = preg_replace($preg, $replace, $markup);
+    }
+
+    echo $markup;
 
     echo '</div>' . PHP_EOL;
 }
