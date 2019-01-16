@@ -71,6 +71,15 @@ foreach ($types_display as $type => $data) {
             );
         }
 
+        echo '<div class="record">';
+        echo '<a href="'. $plural . '">';
+        echo '<div class="record-details">';
+        echo '<h3 class="record-title">See All ' . __(ucwords($plural)) . '</h3>';
+        echo '</div>';
+        echo '<img alt="">';
+        echo '</a>';
+        echo '</div>' . PHP_EOL;
+
         echo '</div>' . PHP_EOL;
     }
 }
