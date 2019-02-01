@@ -12,7 +12,8 @@ $outputPages = function ($container, $indent = '    ') use (&$outputPages) {
             $title = $page->title;
 
             if (empty($title)) {
-                list($label, $title) = explode(': ', $label, 2);
+                $parts = array_pad(explode(': ', $label, 2), 2, '');
+                list($label, $title) = $parts;
             }
 
             echo $indent . '    { text: ' . json_encode($label);

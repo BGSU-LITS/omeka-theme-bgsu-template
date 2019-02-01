@@ -14,7 +14,12 @@ if ($description = option('description')) {
     echo '<p class="text-lead">' . $description . '</p>' . PHP_EOL;
 }
 
-$types = array('item', 'collection', 'exhibit');
+$types = array('item', 'collection');
+
+if (plugin_is_active('ExhibitBuilder')) {
+    $types[] = 'exhibit';
+}
+
 $types_display = array();
 
 foreach ($types as $type) {

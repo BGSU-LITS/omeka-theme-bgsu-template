@@ -81,7 +81,7 @@ foreach ($order as $element) {
             echo '<div id="' . html_escape($toggle) . '">' . $text . '</div>';
         } elseif (filter_var($text, FILTER_VALIDATE_URL)) {
             echo '<a href="' . $text . '" class="url">' . $text . '</a>';
-        } elseif ($config[$element[0]][$element[1]]['linked']) {
+        } elseif (!empty($config[$element[0]][$element[1]]['linked'])) {
             $params = array(
                 'advanced' => array(
                     array(
