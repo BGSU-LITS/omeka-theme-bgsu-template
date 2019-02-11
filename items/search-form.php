@@ -96,18 +96,24 @@ if (get_theme_option('elements_hidden')) {
 
     foreach (array_keys($config) as $setName) {
         foreach ($config[$setName] as $elementName => $elementConfig) {
-            if ($elementConfig['hidden']) {
+            if (!empty($elementConfig['hidden'])) {
                 continue;
             }
 
-            if ($elementConfig['label']) {
-                $element = $table->findByElementSetNameAndElementName(
-                    $setName,
-                    $elementName
-                );
-
-                $elements['Collection'][$element->id] = $elementConfig['label'];
+            if (empty($elementConfig['label'])) {
+                continue;
             }
+
+            $element = $table->findByElementSetNameAndElementName(
+                $setName,
+                $elementName
+            );
+
+            if (empty($element)) {
+                continue;
+            }
+
+            $elements['Collection'][$element->id] = $elementConfig['label'];
         }
     }
 }
