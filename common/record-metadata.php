@@ -5,6 +5,57 @@ $config = Symfony\Component\Yaml\Yaml::parse(
     get_theme_option('elements_config')
 );
 
+foreach (array_keys($elementsForDisplay) as $setName) {
+    foreach ($elementsForDisplay[$setName] as $elementName => $display) {
+        foreach ($display['texts'] as $key => $text) {
+            if (filter_var($text, FILTER_VALIDATE_URL)) {
+                $elementsForDisplay[$setName][$elementName]['texts'][$key] =
+                    '<a href="' . $text . '" class="url">' . $text . '</a>';
+            } elseif (!empty($config[$setName][$elementName]['linked'])) {
+                $params = array(
+                    'advanced' => array(
+                        array(
+                            'element_id' => $display['element']->id,
+                            'type' => 'is exactly',
+                            'terms' => html_entity_decode($text)
+                        )
+                    )
+                );
+
+                if ($collection = get_collection_for_item()) {
+                    $params['collection'] = $collection->id;
+                }
+
+                $elementsForDisplay[$setName][$elementName]['texts'][$key] =
+                    '<a href="' . url('items/browse', $params) . '">' .
+                    $text . '</a>';
+            }
+        }
+    }
+}
+
+if (get_theme_option('elements_auto') !== '0') {
+    $mimeTypes = array_unique(array_map(
+        function ($file) {
+            return $file->mime_type;
+        },
+        $record->getFiles()
+    ));
+
+    foreach ($mimeTypes as $mimeType) {
+        $elementsForDisplay['Dublin Core']['Format']['texts'][] = $mimeType;
+    }
+
+    $elementsForDisplay['Dublin Core']['Identifier']['texts'][] =
+        record_url($record, 'show', true);
+
+    $itemTypeName = $record->getProperty('item_type_name');
+
+    if (!empty($itemTypeName)) {
+        $elementsForDisplay['Dublin Core']['Type']['texts'][] = $itemTypeName;
+    }
+}
+
 $order = array();
 $other = array();
 
@@ -43,9 +94,7 @@ foreach ($order as $element) {
         continue;
     }
 
-    $id = $elementsForDisplay[$element[0]][$element[1]]['element']->id;
     $rows = sizeof($elementsForDisplay[$element[0]][$element[1]]['texts']);
-
     echo '<tr><th' . ($rows > 1 ? ' rowspan="' . $rows . '"' : '') . '>';
 
     $toggle = false;
@@ -79,25 +128,6 @@ foreach ($order as $element) {
 
         if ($toggle) {
             echo '<div id="' . html_escape($toggle) . '">' . $text . '</div>';
-        } elseif (filter_var($text, FILTER_VALIDATE_URL)) {
-            echo '<a href="' . $text . '" class="url">' . $text . '</a>';
-        } elseif (!empty($config[$element[0]][$element[1]]['linked'])) {
-            $params = array(
-                'advanced' => array(
-                    array(
-                        'element_id' => $id,
-                        'type' => 'is exactly',
-                        'terms' => html_entity_decode($text)
-                    )
-                )
-            );
-
-            if ($collection = get_collection_for_item()) {
-                $params['collection'] = $collection->id;
-            }
-
-            echo '<a href="' . url('items/browse', $params) . '">';
-            echo $text . '</a>';
         } else {
             echo $text;
         }
