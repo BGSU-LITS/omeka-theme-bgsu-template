@@ -7,29 +7,28 @@ $config = Symfony\Component\Yaml\Yaml::parse(
 
 foreach (array_keys($elementsForDisplay) as $setName) {
     foreach ($elementsForDisplay[$setName] as $elementName => $display) {
+        if (empty($config[$setName][$elementName]['linked'])) {
+            continue;
+        }
+
         foreach ($display['texts'] as $key => $text) {
-            if (filter_var($text, FILTER_VALIDATE_URL)) {
-                $elementsForDisplay[$setName][$elementName]['texts'][$key] =
-                    '<a href="' . $text . '" class="url">' . $text . '</a>';
-            } elseif (!empty($config[$setName][$elementName]['linked'])) {
-                $params = array(
-                    'advanced' => array(
-                        array(
-                            'element_id' => $display['element']->id,
-                            'type' => 'is exactly',
-                            'terms' => html_entity_decode($text)
-                        )
+            $params = array(
+                'advanced' => array(
+                    array(
+                        'element_id' => $display['element']->id,
+                        'type' => 'is exactly',
+                        'terms' => html_entity_decode($text)
                     )
-                );
+                )
+            );
 
-                if ($collection = get_collection_for_item()) {
-                    $params['collection'] = $collection->id;
-                }
-
-                $elementsForDisplay[$setName][$elementName]['texts'][$key] =
-                    '<a href="' . url('items/browse', $params) . '">' .
-                    $text . '</a>';
+            if ($collection = get_collection_for_item()) {
+                $params['collection'] = $collection->id;
             }
+
+            $elementsForDisplay[$setName][$elementName]['texts'][$key] =
+                '<a href="' . url('items/browse', $params) . '">' .
+                $text . '</a>';
         }
     }
 }
@@ -128,6 +127,8 @@ foreach ($order as $element) {
 
         if ($toggle) {
             echo '<div id="' . html_escape($toggle) . '">' . $text . '</div>';
+        } elseif (filter_var($text, FILTER_VALIDATE_URL)) {
+            echo '<a href="' . $text . '" class="url">' . $text . '</a>';
         } else {
             echo $text;
         }
