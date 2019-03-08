@@ -58,12 +58,14 @@ if (get_theme_option('elements_auto') !== '0') {
 $order = array();
 $other = array();
 
-foreach (array_keys($config) as $setName) {
-    foreach ($config[$setName] as $elementName => $elementConfig) {
-        if (!empty($elementConfig['order'])) {
-            $order[$elementConfig['order']] = array($setName, $elementName);
-        } else {
-            $other[] = array($setName, $elementName);
+if (!empty($config)) {
+    foreach (array_keys($config) as $setName) {
+        foreach ($config[$setName] as $elementName => $elementConfig) {
+            if (!empty($elementConfig['order'])) {
+                $order[$elementConfig['order']] = array($setName, $elementName);
+            } else {
+                $other[] = array($setName, $elementName);
+            }
         }
     }
 }
