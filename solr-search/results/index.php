@@ -7,6 +7,12 @@ $config = Symfony\Component\Yaml\Yaml::parse(
 
 queue_js_url('https://lib.bgsu.edu/template/1.0.0/facets.js');
 
+$style = get_theme_option('style');
+
+if ($style === 'finding_aids' && !isset($_GET['display'])) {
+    $_GET['display'] = 'list';
+}
+
 if (!isset($_GET['display']) || $_GET['display'] !== 'list') {
     $_GET['display'] = 'gallery';
 }

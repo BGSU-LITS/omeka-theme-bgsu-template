@@ -16,6 +16,14 @@ $description = metadata(
     array('snippet' => 300, 'no_escape' => true)
 );
 
+if (empty($description) && $style === 'finding_aids') {
+    $description = metadata(
+        $item,
+        array('Item Type Metadata', 'Introduction'),
+        array('snippet' => 300, 'no_escape' => true)
+    );
+}
+
 if ($description) {
     $output .= '<div class="record-description">' . PHP_EOL;
     $output .= text_to_paragraphs($description) . PHP_EOL . '</div>' . PHP_EOL;
@@ -26,19 +34,23 @@ if ($output) {
     $output .= '</div>' . PHP_EOL;
 }
 
-$output .= '<img alt=""';
+$file = $item->getFile();
 
-if ($file = $item->getFile()) {
-    if (!empty($carousel)) {
-        $output .= ' data-flickity-lazyload="';
-    } else {
-        $output .= ' src="';
+if ($file || $_GET['display'] !== 'list') {
+    $output .= '<img alt=""';
+
+    if ($file) {
+        if (!empty($carousel)) {
+            $output .= ' data-flickity-lazyload="';
+        } else {
+            $output .= ' src="';
+        }
+
+        $output .= $file->getWebPath('fullsize') . '"';
     }
 
-    $output .= $file->getWebPath('fullsize') . '"';
+    $output .= '>' . PHP_EOL;
 }
-
-$output .= '>' . PHP_EOL;
 
 if ($output) {
     echo '<div class="record">' . PHP_EOL;
