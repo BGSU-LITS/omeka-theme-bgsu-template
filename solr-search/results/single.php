@@ -82,8 +82,18 @@ if ($item = get_db()->getTable($result->model)->find($result->modelid)) {
 
         foreach ($highlighting as $field) {
             foreach ($field as $highlight) {
-                $highlight = preg_replace('/&lt;.*?(&gt;|$)/', '', $highlight);
-                $highlight = preg_replace('/(^|&lt;).*?&gt;/', '', $highlight);
+                $highlight = preg_replace(
+                    '/&lt;.*?(&gt;|$)/', 
+                    ' ', 
+                    $highlight
+                );
+
+                $highlight = preg_replace(
+                    '/(^|&lt;).*?&gt;/', 
+                    ' ', 
+                    $highlight
+                );
+
                 $highlight = html_entity_decode($highlight);
                 $highlight = preg_replace('/^\W\s+/', '', $highlight);
                 $highlight = preg_replace('/<\/em>\s+<em>/', ' ', $highlight);
