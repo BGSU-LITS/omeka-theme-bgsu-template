@@ -137,7 +137,8 @@ foreach (array_keys($facets) as $name) {
     if (sizeof($facets[$name]['other']) >= 2) {
         echo '<li class="list-item-toggle">' . PHP_EOL;
         echo '<button id="facets-top-' . $name . '-toggle"';
-        echo ' data-toggle="facets-top-' . $name . '">';
+        echo ' data-toggle="facets-top-' . $name . '"';
+        echo ' class="toggle-control">';
     } elseif (!empty($facets[$name]['added'])) {
         echo '<li>';
     } else {
@@ -172,6 +173,7 @@ foreach (array_keys($facets) as $name) {
             if ($count++ > 5) {
                 echo '<li><button id="facets-all-' . $name . '-toggle"';
                 echo ' data-toggle="facets-all-' . $name . '"';
+                echo ' class="toggle-control"';
                 echo ' title="' . __('Show More') . ' ';
                 echo $getFacetLabel($name) . ' ' . __('Refinements') . '">';
                 echo __('More') . '</button></li>' . PHP_EOL;

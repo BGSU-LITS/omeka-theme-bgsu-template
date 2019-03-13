@@ -103,7 +103,8 @@ foreach ($order as $element) {
     if (!empty($config[$element[0]][$element[1]]['toggle'])) {
         $toggle = 'toggle ' . $element[0] . ' ' . $element[1];
         $toggle = strtolower(preg_replace('/\W+/', '-', trim($toggle)));
-        echo '<button data-toggle="' . html_escape($toggle) . '">';
+        echo '<button data-toggle="' . html_escape($toggle) . '"';
+        echo ' class="toggle-control">';
     }
 
     if (!empty($config[$element[0]][$element[1]]['label'])) {
