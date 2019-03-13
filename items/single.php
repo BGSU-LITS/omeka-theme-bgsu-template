@@ -39,17 +39,20 @@ $file = $item->getFile();
 if ($file || $_GET['display'] !== 'list') {
     $output .= '<img alt=""';
 
-    if ($file) {
-        if (!empty($carousel)) {
-            $output .= ' data-flickity-lazyload="';
-        } else {
-            $output .= ' src="';
-        }
-
-        $output .= $file->getWebPath('fullsize') . '"';
+    if (!empty($carousel)) {
+        $output .= ' data-flickity-lazyload="';
+    } else {
+        $output .= ' src="';
     }
 
-    $output .= '>' . PHP_EOL;
+    if ($file) {
+        $output .= $file->getWebPath('fullsize');
+    } else {
+        $output .= 'data:image/gif;base64,R0lGODlhAQABAIAAAP';
+        $output .= '///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+    }
+
+    $output .= '">' . PHP_EOL;
 }
 
 if ($output) {

@@ -91,7 +91,10 @@ foreach ($types_display as $type => $data) {
             echo '<div class="record"><a href="'. $plural . '">';
             echo '<div class="record-details"><h3 class="record-title">';
             echo __('See All ' . ucwords($plural)) . '</h3></div>';
-            echo '<img alt=""></a></div>' . PHP_EOL;
+            echo '<img alt="" src="';
+            echo 'data:image/gif;base64,R0lGODlhAQABAIAAAP';
+            echo '///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+            echo '"></a></div>' . PHP_EOL;
         }
 
         echo '</div>' . PHP_EOL;
