@@ -33,6 +33,9 @@ foreach (array_keys($elementsForDisplay) as $setName) {
     }
 }
 
+$itemTypeName = $record->getProperty('item_type_name');
+$itemTypeElementSetName = $itemTypeName . ' ' . ElementSet::ITEM_TYPE_NAME;
+
 if (get_theme_option('elements_auto') !== '0') {
     $mimeTypes = array_unique(array_map(
         function ($file) {
@@ -47,8 +50,6 @@ if (get_theme_option('elements_auto') !== '0') {
 
     $elementsForDisplay['Dublin Core']['Identifier']['texts'][] =
         record_url($record, 'show', true);
-
-    $itemTypeName = $record->getProperty('item_type_name');
 
     if (!empty($itemTypeName)) {
         $elementsForDisplay['Dublin Core']['Type']['texts'][] = $itemTypeName;
@@ -92,6 +93,10 @@ foreach ($order as $element) {
     }
 
     if (!empty($config[$element[0]][$element[1]]['hidden'])) {
+        continue;
+    }
+
+    if ($element[0] === $itemTypeElementSetName && $element[1] === 'Content') {
         continue;
     }
 

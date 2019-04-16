@@ -74,7 +74,10 @@ foreach ($item->Files as $file) {
         array(
             'imageSize' => 'fullsize',
             'imgAttributes' => array('alt' => __('File ') . $count++),
-            'linkToMetadata' => get_option('link_to_file_metadata')
+            'linkToMetadata' => get_option('link_to_file_metadata'),
+            'linkAttributes' => get_theme_option('files_window')
+                ? array('target' => '_blank')
+                : array()
         ),
         array()
     );
@@ -106,6 +109,23 @@ foreach ($item->Files as $file) {
 }
 
 echo '</div>' . PHP_EOL;
+
+$content = metadata(
+    'item',
+    array(ElementSet::ITEM_TYPE_NAME, 'Content'),
+    array('all' => true)
+);
+
+if (!empty($content)) {
+    echo '<div>' . PHP_EOL;
+
+    foreach ($content as $html) {
+        echo $html;
+    }
+
+    echo '</div>' . PHP_EOL;
+}
+
 echo '<div class="sidebar">' . PHP_EOL;
 echo '<div class="sidebar-right">' . PHP_EOL;
 echo '<h3 class="sidebar-title">';
