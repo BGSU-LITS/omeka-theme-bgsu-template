@@ -1,5 +1,9 @@
 <?php
 queue_css_string('
+.embedded-content br:first-child {
+    display: none;
+}
+
 .table.table-elements {
     width: 100%;
 }
@@ -117,7 +121,7 @@ $content = metadata(
 );
 
 if (!empty($content)) {
-    echo '<div>' . PHP_EOL;
+    echo '<div class="embedded-content">' . PHP_EOL;
 
     foreach ($content as $html) {
         echo $html;
