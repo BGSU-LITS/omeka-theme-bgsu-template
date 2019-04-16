@@ -124,7 +124,7 @@ if (empty($_REQUEST['advanced'])) {
 
 $_REQUEST['advanced'][] = array();
 
-echo '<div class="form-item">' . PHP_EOL;
+echo '<div class="form-item addremove">' . PHP_EOL;
 echo '<label>' . __('Fields:') . '</label>' . PHP_EOL;
 
 foreach ($_REQUEST['advanced'] as $count => $row) {
@@ -132,9 +132,9 @@ foreach ($_REQUEST['advanced'] as $count => $row) {
         echo '</div>' . PHP_EOL;
 
         if (sizeof($_REQUEST['advanced']) === $count + 1) {
-            echo '<div class="form-item form-item-disabled">' . PHP_EOL;
+            echo '<div class="form-item addremove addremove-disabled">' . PHP_EOL;
         } else {
-            echo '<div class="form-item">' . PHP_EOL;
+            echo '<div class="form-item addremove">' . PHP_EOL;
         }
 
         echo '<div class="form-item-before">' . PHP_EOL;
@@ -184,7 +184,7 @@ foreach ($_REQUEST['advanced'] as $count => $row) {
 
     if ($count > 0) {
         echo '<div class="form-item-after">';
-        echo '<button class="form-item-remove">';
+        echo '<button class="addremove-remove">';
         echo __('Remove') . '</button>';
         echo '</div>' . PHP_EOL;
     }
@@ -192,8 +192,8 @@ foreach ($_REQUEST['advanced'] as $count => $row) {
 
 echo '</div>' . PHP_EOL;
 
-echo '<div class="form-item">' . PHP_EOL;
-echo '<div><button type="button" class="form-item-add" disabled>';
+echo '<div class="form-item addremove">' . PHP_EOL;
+echo '<div><button type="button" class="addremove-add" disabled>';
 echo __('Add') . '</button></div>';
 echo '</div>' . PHP_EOL;
 
