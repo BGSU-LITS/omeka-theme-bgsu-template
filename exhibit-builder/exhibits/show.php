@@ -8,6 +8,11 @@ queue_css_string('
     padding: 4px 8px;
 }
 
+#content .nav-exhibit > :first-child {
+    font-size: 1.25em;
+    font-weight: normal;
+}
+
 #content .nav-exhibit .list-inline {
 }
 
@@ -24,7 +29,7 @@ queue_css_string('
 }
 
 #content .nav-page {
-    font-size: 1.2em;
+    font-size: 1.25em;
     padding: 8px;
 }
 
