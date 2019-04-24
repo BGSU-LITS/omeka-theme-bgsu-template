@@ -134,7 +134,8 @@ echo __('Refine Your Search') . '</h2>' . PHP_EOL;
 echo '<ul>' . PHP_EOL;
 
 foreach (array_keys($facets) as $name) {
-    if (sizeof($facets[$name]['other']) >= 2) {
+    if (!empty($facets[$name]['other'])
+     && sizeof($facets[$name]['other']) >= 2) {
         echo '<li class="list-item-toggle">' . PHP_EOL;
         echo '<button id="facets-top-' . $name . '-toggle"';
         echo ' data-toggle="facets-top-' . $name . '"';
@@ -147,7 +148,8 @@ foreach (array_keys($facets) as $name) {
 
     echo $getFacetLabel($name);
 
-    if (sizeof($facets[$name]['other']) >= 2) {
+    if (!empty($facets[$name]['other'])
+     && sizeof($facets[$name]['other']) >= 2) {
         echo '</button>';
     }
 
@@ -165,7 +167,8 @@ foreach (array_keys($facets) as $name) {
 
     $count = 1;
 
-    if (sizeof($facets[$name]['other']) >= 2) {
+    if (!empty($facets[$name]['other'])
+     && sizeof($facets[$name]['other']) >= 2) {
         echo '<div id="facets-top-' . $name . '">' . PHP_EOL;
         echo '<ul class="list-facets list-facets-top">' . PHP_EOL;
 

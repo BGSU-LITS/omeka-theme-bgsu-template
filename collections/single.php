@@ -3,7 +3,7 @@ if (empty($heading)) {
     $heading = 'h2';
 }
 
-if ($style === 'finding_aids') {
+if (!empty($style) && $style === 'finding_aids') {
     $params = array(
         'collection' => $collection->id,
         'sort_field' => 'Dublin Core,Title',

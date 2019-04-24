@@ -114,20 +114,25 @@ foreach ($item->Files as $file) {
 
 echo '</div>' . PHP_EOL;
 
-$content = metadata(
-    'item',
-    array(ElementSet::ITEM_TYPE_NAME, 'Content'),
-    array('all' => true)
-);
+try {
+    $content = metadata(
+        'item',
+        array(ElementSet::ITEM_TYPE_NAME, 'Content'),
+        array('all' => true)
+    );
 
-if (!empty($content)) {
-    echo '<div class="embedded-content">' . PHP_EOL;
+    if (!empty($content)) {
+        echo '<div class="embedded-content">' . PHP_EOL;
 
-    foreach ($content as $html) {
-        echo $html;
+        foreach ($content as $html) {
+            echo $html;
+        }
+
+        echo '</div>' . PHP_EOL;
     }
-
-    echo '</div>' . PHP_EOL;
+}
+catch (Omeka_Record_Exception $e) {
+    // Do nothing.
 }
 
 echo '<div class="sidebar">' . PHP_EOL;

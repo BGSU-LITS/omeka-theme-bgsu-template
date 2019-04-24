@@ -16,12 +16,14 @@ $description = metadata(
     array('snippet' => 300, 'no_escape' => true)
 );
 
-if (empty($description) && $style === 'finding_aids') {
-    $description = metadata(
-        $item,
-        array('Item Type Metadata', 'Introduction'),
-        array('snippet' => 300, 'no_escape' => true)
-    );
+if (empty($description)) {
+    if (!empty($style) && $style === 'finding_aids') {
+        $description = metadata(
+            $item,
+            array('Item Type Metadata', 'Introduction'),
+            array('snippet' => 300, 'no_escape' => true)
+        );
+    }
 }
 
 if ($description) {

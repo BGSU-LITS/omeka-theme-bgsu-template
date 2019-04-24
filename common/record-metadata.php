@@ -33,8 +33,10 @@ foreach (array_keys($elementsForDisplay) as $setName) {
     }
 }
 
-$itemTypeName = $record->getProperty('item_type_name');
-$itemTypeElementSetName = $itemTypeName . ' ' . ElementSet::ITEM_TYPE_NAME;
+if (get_class($record) === 'Item') {
+    $itemTypeName = $record->getProperty('item_type_name');
+    $itemTypeElementSetName = $itemTypeName . ' ' . ElementSet::ITEM_TYPE_NAME;
+}
 
 if (get_theme_option('elements_auto') !== '0') {
     $mimeTypes = array_unique(array_map(

@@ -55,7 +55,7 @@ if (get_theme_option('elements_hidden')) {
 
     foreach (array_keys($config) as $setName) {
         foreach ($config[$setName] as $elementName => $elementConfig) {
-            if ($elementConfig['hidden']) {
+            if (!empty($elementConfig['hidden'])) {
                 continue;
             }
 
@@ -66,7 +66,9 @@ if (get_theme_option('elements_hidden')) {
 
             $item = array(
                 $element->id,
-                $elementConfig['label'] ? $elementConfig['label'] : $elementName
+                !empty($elementConfig['label']) 
+                    ? $elementConfig['label'] 
+                    : $elementName
             );
 
             if (!empty($elementConfig['order'])) {
