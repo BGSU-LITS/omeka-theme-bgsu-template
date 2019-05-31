@@ -49,9 +49,13 @@ queue_css_string('
     max-width: 100%;
     margin: 0 auto 5px;
 }
-
 ');
 
+$css = get_theme_option('exhibit_style');
+
+if ($css) {
+    queue_css_string($css);
+}
 
 $page = get_current_record('exhibit_page');
 $current = $page;
@@ -103,6 +107,26 @@ if ($topPages = $exhibit->getTopPages()) {
 
 echo exhibit_builder_render_exhibit_page();
 
+if (get_theme_option('exhibit_nav_subpages')) {
+    if ($children = exhibit_builder_child_pages()) {
+        echo '<ul>';
+
+        foreach ($children as $child) {
+            echo '<li>';
+            echo exhibit_builder_link_to_exhibit(
+                $exhibit,
+                metadata($child, 'title'),
+                array(),
+                $child
+            );
+
+            echo '</li>';
+        }
+
+        echo '</ul>';
+    }
+}
+
 echo '<nav class="nav-page" aria-label="pagination">';
 echo '<div>';
 
@@ -113,17 +137,19 @@ if ($previousPage) {
     $text .= metadata($previousPage, 'menu_title');
     $text .= '</div>';
 
-    $attachments = $previousPage->getAllAttachments();
+    if (get_theme_option('exhibit_nav_thumbnails')) {
+        $attachments = $previousPage->getAllAttachments();
 
-    if ($attachment = reset($attachments)) {
-        $text .= file_markup(
-            $attachment->getFile(),
-            array(
-                'linkToFile' => false,
-                'imgAttributes' => array('alt' => '')
-            ),
-            array()
-        );
+        if ($attachment = reset($attachments)) {
+            $text .= file_markup(
+                $attachment->getFile(),
+                array(
+                    'linkToFile' => false,
+                    'imgAttributes' => array('alt' => '')
+                ),
+                array()
+            );
+        }
     }
 
     echo exhibit_builder_link_to_exhibit(
@@ -149,17 +175,19 @@ if ($nextPage) {
     $text .= metadata($nextPage, 'menu_title');
     $text .= '</div>';
 
-    $attachments = $nextPage->getAllAttachments();
+    if (get_theme_option('exhibit_nav_thumbnails')) {
+        $attachments = $nextPage->getAllAttachments();
 
-    if ($attachment = reset($attachments)) {
-        $text .= file_markup(
-            $attachment->getFile(),
-            array(
-                'linkToFile' => false,
-                'imgAttributes' => array('alt' => '')
-            ),
-            array()
-        );
+        if ($attachment = reset($attachments)) {
+            $text .= file_markup(
+                $attachment->getFile(),
+                array(
+                    'linkToFile' => false,
+                    'imgAttributes' => array('alt' => '')
+                ),
+                array()
+            );
+        }
     }
 
     echo exhibit_builder_link_to_exhibit(

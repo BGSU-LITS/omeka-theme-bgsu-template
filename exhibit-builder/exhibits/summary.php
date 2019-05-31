@@ -32,6 +32,12 @@ queue_css_string('
 }
 ');
 
+$css = get_theme_option('exhibit_style');
+
+if ($css) {
+    queue_css_string($css);
+}
+
 echo head(array(
     'title' => metadata($exhibit, 'title'),
     'ancestors' => array(url('exhibits') => 'Exhibits')
@@ -92,17 +98,19 @@ if ($nextPage) {
     $text .= metadata($nextPage, 'menu_title');
     $text .= '</div>';
 
-    $attachments = $nextPage->getAllAttachments();
+    if (get_theme_option('exhibit_nav_thumbnails')) {
+        $attachments = $nextPage->getAllAttachments();
 
-    if ($attachment = reset($attachments)) {
-        $text .= file_markup(
-            $attachment->getFile(),
-            array(
-                'linkToFile' => false,
-                'imgAttributes' => array('alt' => '')
-            ),
-            array()
-        );
+        if ($attachment = reset($attachments)) {
+            $text .= file_markup(
+                $attachment->getFile(),
+                array(
+                    'linkToFile' => false,
+                    'imgAttributes' => array('alt' => '')
+                ),
+                array()
+            );
+        }
     }
 
     echo exhibit_builder_link_to_exhibit(
