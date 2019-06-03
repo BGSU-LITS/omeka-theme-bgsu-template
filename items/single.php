@@ -39,22 +39,25 @@ if ($output) {
 $file = $item->getFile();
 
 if ($file || $_GET['display'] !== 'list') {
-    $output .= '<img alt=""';
+    $path = $file->getWebPath('fullsize');
 
-    if (!empty($carousel)) {
-        $output .= ' data-flickity-lazyload="';
+    $output .= '<div class="record-image"';
+
+    if ($aspect) {
+        if (!empty($carousel)) {
+            $output .= '><img alt="" data-flickity-lazyload="' . $path . '"';
+        } else {
+            $output .= '><img alt="" src="' . $path . '"';
+        }
     } else {
-        $output .= ' src="';
+        if (!empty($carousel)) {
+            $output .= ' data-flickity-bg-lazyload="' . $path . '"';
+        } else {
+            $output .= ' style="background-image:url(' . $path . ')"';
+        }
     }
 
-    if ($file) {
-        $output .= $file->getWebPath('fullsize');
-    } else {
-        $output .= 'data:image/gif;base64,R0lGODlhAQABAIAAAP';
-        $output .= '///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
-    }
-
-    $output .= '">' . PHP_EOL;
+    $output .= '></div>' . PHP_EOL;
 }
 
 if ($output) {

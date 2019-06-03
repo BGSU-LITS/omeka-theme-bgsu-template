@@ -83,14 +83,14 @@ if ($item = get_db()->getTable($result->model)->find($result->modelid)) {
         foreach ($highlighting as $field) {
             foreach ($field as $highlight) {
                 $highlight = preg_replace(
-                    '/&lt;.*?(&gt;|$)/', 
-                    ' ', 
+                    '/&lt;.*?(&gt;|$)/',
+                    ' ',
                     $highlight
                 );
 
                 $highlight = preg_replace(
-                    '/(^|&lt;).*?&gt;/', 
-                    ' ', 
+                    '/(^|&lt;).*?&gt;/',
+                    ' ',
                     $highlight
                 );
 
@@ -109,22 +109,19 @@ if ($item = get_db()->getTable($result->model)->find($result->modelid)) {
         $output .= '</div>' . PHP_EOL;
     }
 
-    $output .= '<img alt=""';
-
-    if (!empty($carousel)) {
-        $output .= ' data-flickity-lazyload="';
-    } else {
-        $output .= ' src="';
-    }
+    $output .= '<div class="record-image"';
 
     if ($file = $item->getFile()) {
-        $output .= $file->getWebPath('fullsize');
-    } else {
-        $output .= 'data:image/gif;base64,R0lGODlhAQABAIAAAP';
-        $output .= '///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+        $path = $file->getWebPath('fullsize');
+
+        if (!empty($carousel)) {
+            $output .= ' data-flickity-bg-lazyload="' . $path . '"';
+        } else {
+            $output .= ' style="background-image:url(' . $path . ')"';
+        }
     }
 
-    $output .= '">' . PHP_EOL;
+    $output .= '></div>' . PHP_EOL;
 
     if ($output) {
         echo '<div class="record">' . PHP_EOL;

@@ -35,7 +35,7 @@ queue_css_string('
 ');
 
 if (sizeof($item->Files) > 4) {
-    queue_js_url('https://lib.bgsu.edu/template/1.0.0/flickity.js');
+    queue_js_url(BGSU_TEMPLATE . 'flickity.js');
 }
 
 $ancestors = array();
@@ -84,6 +84,12 @@ foreach ($item->Files as $file) {
                 : array()
         ),
         array()
+    );
+
+    $markup = preg_replace(
+        '/<img [^>]+>/',
+        '<div class="record-image">$0</div>',
+        $markup
     );
 
     $watermark = get_theme_option('watermark_images') !== '0';

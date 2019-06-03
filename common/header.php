@@ -32,9 +32,9 @@ echo auto_discovery_link_tags() . PHP_EOL;
 fire_plugin_hook('public_head', array('view' => $this));
 
 get_view()->headScript()
-    ->prependFile('https://lib.bgsu.edu/template/1.0.0/common.js')
-    ->prependFile('https://lib.bgsu.edu/template/1.0.0/template.js')
-    ->prependFile('https://lib.bgsu.edu/template/1.0.0/tippy.js');
+    ->prependFile(BGSU_TEMPLATE . 'common.js')
+    ->prependFile(BGSU_TEMPLATE . 'template.js')
+    ->prependFile(BGSU_TEMPLATE . 'tippy.js');
 
 echo head_css() . PHP_EOL . head_js(false) . PHP_EOL;
 echo '</head>' . PHP_EOL;

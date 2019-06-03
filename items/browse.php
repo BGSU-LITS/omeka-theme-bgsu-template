@@ -5,7 +5,7 @@ $config = Symfony\Component\Yaml\Yaml::parse(
     get_theme_option('elements_config')
 );
 
-queue_js_url('https://lib.bgsu.edu/template/1.0.0/facets.js');
+queue_js_url(BGSU_TEMPLATE . 'facets.js');
 
 $style = get_theme_option('style');
 

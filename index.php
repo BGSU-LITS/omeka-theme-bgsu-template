@@ -3,7 +3,7 @@ $style = get_theme_option('style');
 $carousel = get_theme_option('homepage_carousel');
 
 if ($carousel) {
-    queue_js_url('https://lib.bgsu.edu/template/1.0.0/flickity.js');
+    queue_js_url(BGSU_TEMPLATE . 'flickity.js');
 }
 
 echo head(array(
@@ -91,10 +91,7 @@ foreach ($types_display as $type => $data) {
             echo '<div class="record"><a href="'. $plural . '">';
             echo '<div class="record-details"><h3 class="record-title">';
             echo __('See All ' . ucwords($plural)) . '</h3></div>';
-            echo '<img alt="" src="';
-            echo 'data:image/gif;base64,R0lGODlhAQABAIAAAP';
-            echo '///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
-            echo '"></a></div>' . PHP_EOL;
+            echo '<div class="record-image"></div></a></div>' . PHP_EOL;
         }
 
         echo '</div>' . PHP_EOL;

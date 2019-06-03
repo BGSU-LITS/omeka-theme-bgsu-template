@@ -2,7 +2,7 @@
 $carousel = get_theme_option('featured_carousel');
 
 if ($carousel) {
-    queue_js_url('https://lib.bgsu.edu/template/1.0.0/flickity.js');
+    queue_js_url(BGSU_TEMPLATE . 'flickity.js');
 }
 
 echo head(array(
@@ -61,7 +61,8 @@ if (!empty($featured)) {
             array(
                 'item' => $item,
                 'carousel' => $carousel,
-                'heading' => 'h3'
+                'heading' => 'h3',
+                'aspect' => get_theme_option('featured_aspect')
             )
         );
     }

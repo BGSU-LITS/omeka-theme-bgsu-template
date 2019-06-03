@@ -1,5 +1,5 @@
 <?php
-queue_js_url('https://lib.bgsu.edu/template/1.0.0/addremove.js');
+queue_js_url(BGSU_TEMPLATE . 'addremove.js');
 
 $ancestors = array();
 
