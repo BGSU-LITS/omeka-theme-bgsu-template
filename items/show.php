@@ -40,7 +40,12 @@ if (sizeof($item->Files) > 4) {
 
 $ancestors = array();
 
-if ($collection = get_collection_for_item()) {
+if (!empty($exhibit)) {
+    $ancestors = array(
+        url('exhibits') => 'Exhibits',
+        exhibit_builder_exhibit_uri($exhibit) => metadata($exhibit, 'title')
+    );
+} elseif ($collection = get_collection_for_item()) {
     $ancestors = array(
         url('collections') => 'Collections',
         record_url($collection) => metadata($collection, 'display_title')
@@ -52,20 +57,28 @@ echo head(array(
     'ancestors' => $ancestors
 ));
 
-echo '<div class="sidebar">' . PHP_EOL;
-
-if (!empty($collection)) {
-    echo '<div class="sidebar-left" id="collection">' . PHP_EOL;
-
+if (!empty($exhibit)) {
     echo $this->partial(
-        'collections/sidebar.php',
-        array('collection' => $collection)
+        'exhibit-builder/exhibits/nav.php',
+        array('exhibit' => $exhibit, 'content' => true)
     );
+} else {
+    echo '<div class="sidebar">' . PHP_EOL;
 
-    echo '</div>' . PHP_EOL;
+    if (!empty($collection)) {
+        echo '<div class="sidebar-left" id="collection">' . PHP_EOL;
+
+        echo $this->partial(
+            'collections/sidebar.php',
+            array('collection' => $collection)
+        );
+
+        echo '</div>' . PHP_EOL;
+    }
+
+    echo '<div>' . PHP_EOL;
 }
 
-echo '<div>' . PHP_EOL;
 echo '<div class="records records-gallery records-gallery-aspect">' . PHP_EOL;
 
 $count = 1;
@@ -180,7 +193,9 @@ echo '</div>' . PHP_EOL;
 
 fire_plugin_hook('public_items_show', array('view' => $this, 'item' => $item));
 
-echo '</div>' . PHP_EOL;
-echo '</div>' . PHP_EOL;
+if (empty($exhibit)) {
+    echo '</div>' . PHP_EOL;
+    echo '</div>' . PHP_EOL;
+}
 
 echo foot();

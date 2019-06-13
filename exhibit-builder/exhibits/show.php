@@ -1,45 +1,5 @@
 <?php
 queue_css_string('
-#content .nav-exhibit {
-    background: #f2f2f2;
-    border-radius: 4px;
-    line-height: 1.5;
-    margin: 0 0 20px 0;
-    padding: 4px 8px;
-}
-
-#content .nav-exhibit > :first-child {
-    font-size: 1.25em;
-    font-weight: normal;
-}
-
-#content .nav-exhibit .list-inline {
-}
-
-#content .nav-exhibit .list-inline li {
-    padding: 4px 8px 0 0;
-}
-
-#content .nav-exhibit .active {
-    font-weight: bold;
-}
-
-#content .nav-exhibit .active:first-child {
-    font-weight: normal;
-}
-
-#content .nav-page {
-    font-size: 1.25em;
-    padding: 8px;
-}
-
-#content .nav-page img {
-    margin-top: 8px;
-    object-fit: cover;
-    width: 200px;
-    height: 150px;
-}
-
 #content .layout-file-text .exhibit-items > * {
     margin: 0;
 }
@@ -50,12 +10,6 @@ queue_css_string('
     margin: 0 auto 5px;
 }
 ');
-
-$css = get_theme_option('exhibit_style');
-
-if ($css) {
-    queue_css_string($css);
-}
 
 $page = get_current_record('exhibit_page');
 $current = $page;
@@ -80,30 +34,10 @@ echo head(array(
     'ancestors' => $ancestors
 ));
 
-if ($topPages = $exhibit->getTopPages()) {
-    $nav = array(
-        array(
-            'label' => 'Introduction',
-            'uri' => exhibit_builder_exhibit_uri($exhibit)
-        )
-    );
-
-    foreach ($topPages as $topPage) {
-        $nav[] = array(
-            'label' => metadata(
-                $topPage,
-                'menu_title',
-                array('no_escape' => true)
-            ),
-            'uri' => exhibit_builder_exhibit_uri($exhibit, $topPage)
-        );
-    }
-
-    echo '<nav class="nav-exhibit" aria-label="exhibit">';
-    echo '<strong>Exhibit Contents</strong>';
-    echo nav($nav)->setUlClass('list-inline');
-    echo '</nav>';
-}
+echo $this->partial(
+    'exhibit-builder/exhibits/nav.php',
+    array('exhibit' => $exhibit, 'content' => true)
+);
 
 echo exhibit_builder_render_exhibit_page();
 
@@ -127,7 +61,7 @@ if (get_theme_option('exhibit_nav_subpages')) {
     }
 }
 
-echo '<nav class="nav-page" aria-label="pagination">';
+echo '<nav class="nav-page nav-page-large" aria-label="pagination">';
 echo '<div>';
 
 $previousPage = $page->previousOrParent();
@@ -141,14 +75,11 @@ if ($previousPage) {
         $attachments = $previousPage->getAllAttachments();
 
         if ($attachment = reset($attachments)) {
-            $text .= file_markup(
-                $attachment->getFile(),
-                array(
-                    'linkToFile' => false,
-                    'imgAttributes' => array('alt' => '')
-                ),
-                array()
-            );
+            if ($file = $attachment->getFile()) {
+                $text .= '<div class="nav-page-image"';
+                $text .= ' style="background-image:url(';
+                $text .= $file->getWebPath('fullsize') . ')"></div>' . PHP_EOL;
+            }
         }
     }
 
@@ -179,14 +110,11 @@ if ($nextPage) {
         $attachments = $nextPage->getAllAttachments();
 
         if ($attachment = reset($attachments)) {
-            $text .= file_markup(
-                $attachment->getFile(),
-                array(
-                    'linkToFile' => false,
-                    'imgAttributes' => array('alt' => '')
-                ),
-                array()
-            );
+            if ($file = $attachment->getFile()) {
+                $text .= '<div class="nav-page-image"';
+                $text .= ' style="background-image:url(';
+                $text .= $file->getWebPath('fullsize') . ')"></div>' . PHP_EOL;
+            }
         }
     }
 

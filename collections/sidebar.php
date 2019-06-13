@@ -12,7 +12,7 @@ if ($img = get_theme_option('collection_background')) {
 }
 
 if (!empty(trim($css))) {
-    echo '<style>' . utf8_htmlspecialchars($css) . '</style>' . PHP_EOL;
+    echo '<style>' . $css . '</style>' . PHP_EOL;
 }
 
 $href = record_url($collection);
