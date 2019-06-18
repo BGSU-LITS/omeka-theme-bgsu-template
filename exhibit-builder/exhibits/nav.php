@@ -27,11 +27,16 @@ $css .= '
 .nav-exhibit .active {
     font-weight: bold;
 }
+';
 
+
+if ($exhibit->use_summary_page) {
+    $css .= '
 .nav-exhibit-content .active:first-child {
     font-weight: normal;
 }
 ';
+}
 
 if (!empty(trim($css))) {
     echo '<style>' . $css . '</style>' . PHP_EOL;
