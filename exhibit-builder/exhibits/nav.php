@@ -38,12 +38,14 @@ if (!empty(trim($css))) {
 }
 
 if ($topPages = $exhibit->getTopPages()) {
-    $nav = array(
-        array(
-            'label' => 'Introduction',
-            'uri' => exhibit_builder_exhibit_uri($exhibit)
-        )
-    );
+    if ($exhibit->use_summary_page) {
+        $nav = array(
+            array(
+                'label' => 'Introduction',
+                'uri' => exhibit_builder_exhibit_uri($exhibit)
+            )
+        );
+    }
 
     foreach ($topPages as $topPage) {
         $nav[] = array(

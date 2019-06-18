@@ -89,7 +89,7 @@ if ($previousPage) {
         array(),
         $previousPage
     );
-} else {
+} elseif ($exhibit->use_summary_page) {
     echo exhibit_builder_link_to_exhibit(
         $exhibit,
         '<div class="nav-page-previous">Introduction</div>'
