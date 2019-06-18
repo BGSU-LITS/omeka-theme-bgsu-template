@@ -16,15 +16,19 @@ $exhibitDescription = metadata(
 );
 
 if ($exhibitDescription) {
+    echo '<div class="exhibit-description">';
     echo '<h2>' . __('Introduction') . '</h2>';
     echo '<div>' . $exhibitDescription . '</div>';
+    echo '</div>';
 }
 
 $exhibitCredits = metadata('exhibit', 'credits');
 
 if ($exhibitCredits) {
+    echo '<div class="exhibit-credits">';
     echo '<h2>' . __('Credits') . '</h2>';
     echo '<div>' . $exhibitCredits . '</div>';
+    echo '</div>';
 }
 
 echo '<nav class="nav-page nav-page-large" aria-label="pagination">';
