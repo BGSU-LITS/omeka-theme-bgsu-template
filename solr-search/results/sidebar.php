@@ -17,9 +17,12 @@ if (!empty($collection)) {
     echo $collection->id . '">' . PHP_EOL;
 
     if (empty($_GET['facet'])) {
-        $_GET['facet'] = 'collection:"';
-        $_GET['facet'] .= metadata($collection, array('Dublin Core', 'Title'));
-        $_GET['facet'] .= '"';
+        $facet = 'collection:"';
+        $facet .= metadata($collection, array('Dublin Core', 'Title'));
+        $facet .= '"';
+
+        echo '<input type="hidden" name="facet" value="';
+        echo html_escape($facet) . '">' . PHP_EOL;
     }
 }
 
