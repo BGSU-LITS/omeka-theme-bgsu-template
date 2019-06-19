@@ -62,33 +62,70 @@ if ($this->totalItemCount) {
 if ($loop !== 'Results') {
     echo ' ' . __('sorted by') . ' ';
 
+    $sorts = array(
+        array(
+            'name' => 'most recent',
+            'sort' => 'added',
+            'dir' => 'd'
+        ),
+        array(
+            'name' => 'title',
+            'sort' => $loop === 'Exhibits' ? 'title' : 'Dublin Core,Title',
+            'dir' => 'a'
+        )
+    );
+
     $queryParams = $_GET;
+    $sortDefault = reset($sorts);
 
     if (empty($queryParams[Omeka_Db_Table::SORT_PARAM])) {
-        $queryParams[Omeka_Db_Table::SORT_PARAM] = 'added';
+        $queryParams[Omeka_Db_Table::SORT_PARAM] = $sortDefault['sort'];
     }
 
-    if ($queryParams[Omeka_Db_Table::SORT_PARAM] === 'added') {
-        echo __('most recent') . '</a>' . PHP_EOL;
+    if (empty($queryParams[Omeka_Db_Table::SORT_DIR_PARAM])) {
+        $queryParams[Omeka_Db_Table::SORT_DIR_PARAM] = $sortDefault['dir'];
+    }
 
-        if ($loop === 'Exhibits') {
-            $queryParams[Omeka_Db_Table::SORT_PARAM] = 'title';
-        } else {
-            $queryParams[Omeka_Db_Table::SORT_PARAM] = 'Dublin Core,Title';
+    foreach ($sorts as $key => $sort) {
+        if ($sort['sort'] !== $queryParams[Omeka_Db_Table::SORT_PARAM]) {
+            continue;
         }
 
-        $queryParams[Omeka_Db_Table::SORT_DIR_PARAM] = 'a';
+        if ($sort['dir'] !== $queryParams[Omeka_Db_Table::SORT_DIR_PARAM]) {
+            continue;
+        }
+
+        $sortName = $sort['name'];
+        unset($sorts[$key]);
+        break;
+    }
+
+    if (empty($sortName)) {
+        list($sortClass, $sortName) = explode(
+            ',',
+            strtolower($queryParams[Omeka_Db_Table::SORT_PARAM]),
+            2
+        );
+
+        if (empty($sortName)) {
+            $sortName = $sortClass;
+        }
+
+        if ($queryParams[Omeka_Db_Table::SORT_DIR_PARAM] === 'a') {
+            $sortName .= ' asc.';
+        } else {
+            $sortName .= ' desc.';
+        }
+    }
+
+    echo __($sortName) . '</a>' . PHP_EOL;
+
+    foreach ($sorts as $sort) {
+        $queryParams[Omeka_Db_Table::SORT_PARAM] = $sort['sort'];
+        $queryParams[Omeka_Db_Table::SORT_DIR_PARAM] = $sort['dir'];
 
         echo '<a href="' . $this->url(array(), null, $queryParams) . '">';
-        echo __('Sort by title');
-    } else {
-        echo __('title') . '</a>' . PHP_EOL;
-
-        $queryParams[Omeka_Db_Table::SORT_PARAM] = 'added';
-        $queryParams[Omeka_Db_Table::SORT_DIR_PARAM] = 'd';
-
-        echo '<a href="' . $this->url(array(), null, $queryParams) . '">';
-        echo __('Sort by most recent');
+        echo __('Sort by ' . $sort['name']);
     }
 }
 
