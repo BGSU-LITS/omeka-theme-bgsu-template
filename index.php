@@ -54,9 +54,26 @@ foreach ($types_display as $type => $data) {
             echo '<div>';
         } else {
             $plural = $this->pluralize($type);
+            $href = $plural;
+
+            if ($href === 'items') {
+                $params = array();
+
+                if ($field = get_theme_option('sort_0_field')) {
+                    $params[Omeka_Db_Table::SORT_PARAM] = $field;
+                }
+
+                if ($dir = get_theme_option('sort_0_dir')) {
+                    $params[Omeka_Db_Table::SORT_DIR_PARAM] = $dir;
+                }
+
+                if (!empty($params)) {
+                    $href .= '?' . http_build_query($params);
+                }
+            }
 
             echo '<h2>';
-            echo '<a href="' . $plural  . '">';
+            echo '<a href="' . $href . '">';
             echo __(ucwords($plural)) . '</a>';
 
             if ($data['link']) {
@@ -88,7 +105,7 @@ foreach ($types_display as $type => $data) {
         }
 
         if ($style !== 'finding_aids') {
-            echo '<div class="record"><a href="'. $plural . '">';
+            echo '<div class="record"><a href="'. $href . '">';
             echo '<div class="record-details"><h3 class="record-title">';
             echo __('See All ' . ucwords($plural)) . '</h3></div>';
             echo '<div class="record-image"></div></a></div>' . PHP_EOL;

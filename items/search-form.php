@@ -66,8 +66,8 @@ if (get_theme_option('elements_hidden')) {
 
             $item = array(
                 $element->id,
-                !empty($elementConfig['label']) 
-                    ? $elementConfig['label'] 
+                !empty($elementConfig['label'])
+                    ? $elementConfig['label']
                     : $elementName
             );
 
@@ -261,6 +261,18 @@ if (empty($buttonText)) {
 }
 
 echo '<div class="form-item">' . PHP_EOL;
-echo '<div><input type="submit" value="' . $buttonText . '"></div>' . PHP_EOL;
+echo '<div><input type="submit" value="' . $buttonText . '">';
+
+if ($field = get_theme_option('sort_0_field')) {
+    echo '<input type="hidden" name=' . Omeka_Db_Table::SORT_PARAM;
+    echo ' value="' . html_escape($field) . '">';
+}
+
+if ($dir = get_theme_option('sort_0_dir')) {
+    echo '<input type="hidden" name=' . Omeka_Db_Table::SORT_DIR_PARAM;
+    echo ' value="' . html_escape($dir) . '">';
+}
+
+echo '</div>' . PHP_EOL;
 echo '</div>' . PHP_EOL;
 echo '</form>' . PHP_EOL;

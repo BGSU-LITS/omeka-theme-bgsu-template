@@ -54,16 +54,25 @@ if ($style === 'finding_aids') {
         'label' => __('Browse Items'),
         'uri' => $href
     );
-
 } else {
     $nav[] = array(
         'label' => __('Home'),
         'uri' => record_url($collection)
     );
 
+    $params = array('collection' => $collection->id);
+
+    if ($field = get_theme_option('sort_0_field')) {
+        $params[Omeka_Db_Table::SORT_PARAM] = $field;
+    }
+
+    if ($dir = get_theme_option('sort_0_dir')) {
+        $params[Omeka_Db_Table::SORT_DIR_PARAM] = $dir;
+    }
+
     $nav[] = array(
         'label' => __('Browse Items'),
-        'uri' => url('items/browse', array('collection' => $collection->id))
+        'uri' => url('items/browse', $params)
     );
 }
 
