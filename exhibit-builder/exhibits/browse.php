@@ -8,7 +8,7 @@ echo head(array(
 ));
 
 echo pagination_links();
-echo '<div class="records records-paginated records-';
+echo '<div class="records records-';
 echo $_GET['display'] . '">' . PHP_EOL;
 
 foreach (loop('exhibits') as $exhibit) {

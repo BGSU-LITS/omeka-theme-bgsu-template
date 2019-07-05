@@ -209,11 +209,11 @@ if (empty($count)) {
 echo '</ul>' . PHP_EOL;
 echo '</div>' . PHP_EOL;
 
-echo '<div>' . PHP_EOL;
+echo '<div class="records-paginated">' . PHP_EOL;
 
 if (!empty($results->response->docs)) {
     echo pagination_links();
-    echo '<div class="records records-paginated records-';
+    echo '<div class="records records-';
     echo $_GET['display'] . '">' . PHP_EOL;
 
     foreach ($results->response->docs as $result) {

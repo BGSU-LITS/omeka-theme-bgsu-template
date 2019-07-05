@@ -6,7 +6,7 @@ if (!isset($_GET['display']) || $_GET['display'] !== 'list') {
 echo head(array('title' => __('Collections')));
 
 echo pagination_links();
-echo '<div class="records records-paginated records-';
+echo '<div class="records records-';
 echo $_GET['display'] . '">' . PHP_EOL;
 
 foreach (loop('collections') as $collection) {

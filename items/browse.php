@@ -181,10 +181,10 @@ if (!empty($collection) || $advanced) {
     echo '</div>' . PHP_EOL;
 }
 
-echo '<div>' . PHP_EOL;
+echo '<div class="records-paginated">' . PHP_EOL;
 
 echo pagination_links();
-echo '<div class="records records-paginated records-';
+echo '<div class="records records-';
 echo $_GET['display'] . '">' . PHP_EOL;
 
 foreach (loop('items') as $item) {
