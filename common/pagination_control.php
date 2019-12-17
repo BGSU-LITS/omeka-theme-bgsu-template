@@ -112,30 +112,38 @@ if ($loop !== 'Results') {
             continue;
         }
 
-        $sortName = $sort['name'];
+        $sortName = __($sort['name']);
         unset($sorts[$key]);
         break;
     }
 
     if (empty($sortName)) {
-        list($sortClass, $sortName) = explode(
-            ',',
-            strtolower($queryParams[Omeka_Db_Table::SORT_PARAM]),
-            2
-        );
+        $sortParam = strtolower($queryParams[Omeka_Db_Table::SORT_PARAM]);
 
-        if (empty($sortName)) {
-            $sortName = $sortClass;
-        }
+        if (preg_match('/^[a-z, ]+$/', $sortParam)) {
+            list($sortClass, $sortName) = explode(
+                ',',
+                strtolower($queryParams[Omeka_Db_Table::SORT_PARAM]),
+                2
+            );
 
-        if ($queryParams[Omeka_Db_Table::SORT_DIR_PARAM] === 'a') {
-            $sortName .= ' asc.';
-        } else {
-            $sortName .= ' desc.';
+            if (empty($sortName)) {
+                $sortName = $sortClass;
+            }
+
+            if ($queryParams[Omeka_Db_Table::SORT_DIR_PARAM] === 'd') {
+                $sortName .= ' desc.';
+            } else {
+                $sortName .= ' asc.';
+            }
         }
     }
 
-    echo ' ' . __('sorted by') . ' ' . __($sortName) . '</a>' . PHP_EOL;
+    if (!empty($sortName)) {
+        echo ' ' . __('sorted by') . ' ' . html_escape($sortName);
+    }
+
+    echo '</a>' . PHP_EOL;
 
     foreach ($sorts as $sort) {
         $queryParams[Omeka_Db_Table::SORT_PARAM] = $sort['field'];
