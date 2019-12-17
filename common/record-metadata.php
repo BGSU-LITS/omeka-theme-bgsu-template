@@ -22,8 +22,10 @@ foreach (array_keys($elementsForDisplay) as $setName) {
                 )
             );
 
-            if ($collection = get_collection_for_item()) {
-                $params['collection'] = $collection->id;
+            if (get_class($record) === 'Item') {
+                if ($collection = get_collection_for_item()) {
+                    $params['collection'] = $collection->id;
+                }
             }
 
             $elementsForDisplay[$setName][$elementName]['texts'][$key] =
@@ -36,25 +38,25 @@ foreach (array_keys($elementsForDisplay) as $setName) {
 if (get_class($record) === 'Item') {
     $itemTypeName = $record->getProperty('item_type_name');
     $itemTypeElementSetName = $itemTypeName . ' ' . ElementSet::ITEM_TYPE_NAME;
-}
 
-if (get_theme_option('elements_auto') !== '0') {
-    $mimeTypes = array_unique(array_map(
-        function ($file) {
-            return $file->mime_type;
-        },
-        $record->getFiles()
-    ));
+    if (get_theme_option('elements_auto') !== '0') {
+        $mimeTypes = array_unique(array_map(
+            function ($file) {
+                return $file->mime_type;
+            },
+            $record->getFiles()
+        ));
 
-    foreach ($mimeTypes as $mimeType) {
-        $elementsForDisplay['Dublin Core']['Format']['texts'][] = $mimeType;
-    }
+        foreach ($mimeTypes as $mimeType) {
+            $elementsForDisplay['Dublin Core']['Format']['texts'][] = $mimeType;
+        }
 
-    $elementsForDisplay['Dublin Core']['Identifier']['texts'][] =
-        record_url($record, 'show', true);
+        $elementsForDisplay['Dublin Core']['Identifier']['texts'][] =
+            record_url($record, 'show', true);
 
-    if (!empty($itemTypeName)) {
-        $elementsForDisplay['Dublin Core']['Type']['texts'][] = $itemTypeName;
+        if (!empty($itemTypeName)) {
+            $elementsForDisplay['Dublin Core']['Type']['texts'][] = $itemTypeName;
+        }
     }
 }
 
@@ -102,7 +104,19 @@ foreach ($order as $element) {
         continue;
     }
 
+    $joined = false;
     $rows = sizeof($elementsForDisplay[$element[0]][$element[1]]['texts']);
+
+    if (!empty($config[$element[0]][$element[1]]['joined'])) {
+        $joined = $config[$element[0]][$element[1]]['joined'];
+
+        if (!is_string($joined)) {
+            $joined = ' ';
+        }
+
+        $rows = 1;
+    }
+
     echo '<tr><th' . ($rows > 1 ? ' rowspan="' . $rows . '"' : '') . '>';
 
     $toggle = false;
@@ -128,12 +142,22 @@ foreach ($order as $element) {
 
     $first = true;
 
+    if ($joined) {
+        echo '<td>';
+
+        if ($toggle) {
+            echo '<div id="' . html_escape($toggle) . '">' . $text . '</div>';
+        }
+    }
+
     foreach ($elementsForDisplay[$element[0]][$element[1]]['texts'] as $text) {
         if (!$first) {
-            echo '</tr>' . PHP_EOL . '<tr>';
+            echo $joined ? $joined : '</tr>' . PHP_EOL . '<tr>';
         }
 
-        echo '<td>';
+        if (!$joined) {
+            echo '<td>';
+        }
 
         if ($toggle) {
             echo '<div id="' . html_escape($toggle) . '">' . $text . '</div>';
@@ -143,9 +167,15 @@ foreach ($order as $element) {
             echo $text;
         }
 
-        echo '</td>';
+        if (!$joined) {
+            echo '</td>';
+        }
 
         $first = false;
+    }
+
+    if ($joined) {
+        echo '</td>';
     }
 
     echo '</tr>' . PHP_EOL;
