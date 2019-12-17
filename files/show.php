@@ -30,7 +30,52 @@ if (!empty($collection)) {
 }
 
 echo '<div>' . PHP_EOL;
-echo file_markup($file, array('imageSize' => 'fullsize'));
+echo '<div class="records records-gallery records-gallery-aspect">' . PHP_EOL;
+echo '<div class="record">' . PHP_EOL;
+
+$markup = file_markup(
+    $file,
+    array(
+        'imageSize' => 'fullsize',
+        'imgAttributes' => array('alt' => __('File')),
+        'linkAttributes' => get_theme_option('files_window')
+            ? array('target' => '_blank')
+            : array()
+    ),
+    array()
+);
+
+$markup = preg_replace(
+    '/<img [^>]+>/',
+    '<div class="record-image">$0</div>',
+    $markup
+);
+
+$watermark = get_theme_option('watermark_images') !== '0';
+
+$mime_types = array(
+    'image/gif',
+    'image/jpeg',
+    'image/png'
+);
+
+if ($watermark && in_array($file->mime_type, $mime_types)) {
+    $preg = '{//([^/]+)/((.*/)?files/original/)}';
+    $replace = '//$1/w/$2';
+
+    if (preg_match($preg, $markup, $matches)) {
+        if ($matches[1] === 'digitalgallery.bgsu.edu') {
+            $replace = '//lib.bgsu.edu/w/digitalgallery/$2';
+        }
+    }
+
+    $markup = preg_replace($preg, $replace, $markup);
+}
+
+echo $markup;
+echo '</div>' . PHP_EOL;
+echo '</div>' . PHP_EOL;
+
 echo all_element_texts('file');
 echo '</div>' . PHP_EOL;
 echo '</div>' . PHP_EOL;

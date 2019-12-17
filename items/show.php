@@ -91,7 +91,7 @@ foreach ($item->Files as $file) {
         array(
             'imageSize' => 'fullsize',
             'imgAttributes' => array('alt' => __('File ') . $count++),
-            'linkToMetadata' => get_option('link_to_file_metadata'),
+            'linkToMetadata' => get_theme_option('files_metadata'),
             'linkAttributes' => get_theme_option('files_window')
                 ? array('target' => '_blank')
                 : array()
@@ -114,7 +114,7 @@ foreach ($item->Files as $file) {
     );
 
     if ($watermark && in_array($file->mime_type, $mime_types)) {
-        $preg = '{//([^/]+)/((.*/)?files/(fullsize|original)/)}';
+        $preg = '{//([^/]+)/((.*/)?files/original/)}';
         $replace = '//$1/w/$2';
 
         if (preg_match($preg, $markup, $matches)) {
