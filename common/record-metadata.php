@@ -23,7 +23,7 @@ foreach (array_keys($elementsForDisplay) as $setName) {
             );
 
             if (get_class($record) === 'Item') {
-                if ($collection = get_collection_for_item()) {
+                if ($collection = get_collection_for_item($record)) {
                     $params['collection'] = $collection->id;
                 }
             }
