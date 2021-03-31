@@ -1,0 +1,24 @@
+#admin-bar li {
+    position: relative;
+}
+
+a#menu-admin-bar-welcome + ul {
+    position: absolute;
+    background: #404040;
+    z-index: 10000;
+    padding-left: 3px;
+    left: -9999px;
+    width: 125%;
+}
+
+a#menu-admin-bar-welcome + ul:hover ,
+a#menu-admin-bar-welcome:hover + ul {
+    left: -6px;
+}
+
+a#menu-admin-bar-welcome + ul li {
+    display: block;
+    text-align: left;
+    padding: 3px;
+    float: none;
+}
