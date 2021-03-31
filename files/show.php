@@ -33,6 +33,18 @@ echo '<div>' . PHP_EOL;
 echo '<div class="records records-gallery records-gallery-aspect">' . PHP_EOL;
 echo '<div class="record">' . PHP_EOL;
 
+$title = metadata($file, array('Dublin Core', 'Title'));
+
+if (!$title) {
+    $title = __('File');
+}
+
+$description = metadata(
+    $file,
+    array('Dublin Core', 'Description'),
+    array('snippet' => 300, 'no_escape' => true)
+);
+
 $markup = file_markup(
     $file,
     array(
@@ -40,7 +52,14 @@ $markup = file_markup(
         'imgAttributes' => array('alt' => __('File')),
         'linkAttributes' => get_theme_option('files_window')
             ? array('target' => '_blank')
-            : array()
+            : array(),
+        'linkText' => 
+            '<div class="record-details">' .
+            '<div class="record-title">' . $title . '</div>' .
+            '<div class="record-description">' . 
+            text_to_paragraphs($description) . '</div>' .
+            '</div>' .
+            '<img src="' . img('fallback-file.png') . '" alt="">'
     ),
     array()
 );

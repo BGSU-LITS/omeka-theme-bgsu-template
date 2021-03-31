@@ -40,43 +40,56 @@ if (sizeof($item->Files) > 4) {
 
 $ancestors = array();
 
-if (!empty($exhibit)) {
-    $ancestors = array(
-        url('exhibits') => 'Exhibits',
-        exhibit_builder_exhibit_uri($exhibit) => metadata($exhibit, 'title')
-    );
-} elseif ($collection = get_collection_for_item()) {
-    $ancestors = array(
-        url('collections') => 'Collections',
-        record_url($collection) => metadata($collection, 'display_title')
-    );
+if (!get_theme_option('hide_ancestors')) {
+    if (!empty($exhibit)) {
+        $ancestors = array(
+            url('exhibits') => 'Exhibits',
+            exhibit_builder_exhibit_uri($exhibit) => metadata($exhibit, 'title')
+        );
+    } elseif ($collection = get_collection_for_item()) {
+        $ancestors = array(
+            url('collections') => 'Collections',
+            record_url($collection) => metadata($collection, 'display_title')
+        );
+    }
+}
+
+$image = null;
+$file = $item->getFile();
+
+if ($file) {
+    $image = $file->getWebPath('fullsize');
 }
 
 echo head(array(
     'title' => metadata('item', 'display_title'),
+    'description' => metadata('item', array('Dublin Core', 'Description')),
+    'image' => $image,
     'ancestors' => $ancestors
 ));
 
-if (!empty($exhibit)) {
-    echo $this->partial(
-        'exhibit-builder/exhibits/nav.php',
-        array('exhibit' => $exhibit, 'content' => true)
-    );
-} else {
-    echo '<div class="sidebar">' . PHP_EOL;
-
-    if (!empty($collection)) {
-        echo '<div class="sidebar-left" id="collection">' . PHP_EOL;
-
+if (!get_theme_option('hide_ancestors')) {
+    if (!empty($exhibit)) {
         echo $this->partial(
-            'collections/sidebar.php',
-            array('collection' => $collection)
+            'exhibit-builder/exhibits/nav.php',
+            array('exhibit' => $exhibit, 'content' => true)
         );
+    } else {
+        echo '<div class="sidebar">' . PHP_EOL;
 
-        echo '</div>' . PHP_EOL;
+        if (!empty($collection)) {
+            echo '<div class="sidebar-left" id="collection">' . PHP_EOL;
+
+            echo $this->partial(
+                'collections/sidebar.php',
+                array('collection' => $collection)
+            );
+
+            echo '</div>' . PHP_EOL;
+        }
+
+        echo '<div>' . PHP_EOL;
     }
-
-    echo '<div>' . PHP_EOL;
 }
 
 echo '<div class="records records-gallery records-gallery-aspect">' . PHP_EOL;
@@ -86,15 +99,34 @@ $count = 1;
 foreach ($item->Files as $file) {
     echo '<div class="record">' . PHP_EOL;
 
+    $title = metadata($file, array('Dublin Core', 'Title'));
+
+    if (!$title) {
+        $title = __('File %s', $count++);
+    }
+
+    $description = metadata(
+        $file,
+        array('Dublin Core', 'Description'),
+        array('snippet' => 300, 'no_escape' => true)
+    );
+
     $markup = file_markup(
         $file,
         array(
             'imageSize' => 'fullsize',
-            'imgAttributes' => array('alt' => __('File ') . $count++),
+            'imgAttributes' => array('alt' => $title),
             'linkToMetadata' => get_theme_option('files_metadata'),
             'linkAttributes' => get_theme_option('files_window')
                 ? array('target' => '_blank')
-                : array()
+                : array(),
+            'linkText' => 
+                '<div class="record-details">' .
+                '<div class="record-title">' . $title . '</div>' .
+                '<div class="record-description">' . 
+                text_to_paragraphs($description) . '</div>' .
+                '</div>' .
+                '<img src="' . img('fallback-file.png') . '" alt="">'
         ),
         array()
     );
@@ -169,6 +201,25 @@ echo '<div class="citation">';
 echo metadata('item', 'citation', array('no_escape' => true));
 echo '</div>' . PHP_EOL;
 
+if (get_theme_option('social')) {
+    $url = urlencode(absolute_url());
+
+    echo '<hr>' . PHP_EOL;
+    echo '<h3 class="sidebar-title">' . __('Share') . '</h3>' . PHP_EOL;
+    echo '<div class="social">' . PHP_EOL;
+    echo '<ul style="margin-bottom:0">';
+    echo '<li><a href="https://www.facebook.com/sharer.php?u=';
+    echo $url . '">Facebook</a></li>' . PHP_EOL;
+    echo '<li><a href="https://twitter.com/intent/tweet?url=';
+    echo $url . '">Twitter</a></li>' . PHP_EOL;
+    echo '<li><a href="mailto:?subject=';
+    echo urlencode(option('site_title') . ': ');
+    echo urlencode(metadata('item', 'display_title')) . '&amp;body=';
+    echo $url . '">Email</a></li>' . PHP_EOL;
+    echo '</ul>' . PHP_EOL;
+    echo '</div>' . PHP_EOL;
+}
+
 if (metadata('item', 'has tags')) {
     $tags = tag_string('item');
 
@@ -193,9 +244,11 @@ echo '</div>' . PHP_EOL;
 
 fire_plugin_hook('public_items_show', array('view' => $this, 'item' => $item));
 
-if (empty($exhibit)) {
-    echo '</div>' . PHP_EOL;
-    echo '</div>' . PHP_EOL;
+if (!get_theme_option('hide_ancestors')) {
+    if (empty($exhibit)) {
+        echo '</div>' . PHP_EOL;
+        echo '</div>' . PHP_EOL;
+    }
 }
 
 echo foot();

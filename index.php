@@ -11,7 +11,11 @@ echo head(array(
     'carousel' => $carousel
 ));
 
-if ($description = option('description')) {
+echo flash();
+
+if ($html = get_theme_option('homepage_html')) {
+    echo $html;
+} else if ($description = option('description')) {
     echo '<p class="text-lead">' . $description . '</p>' . PHP_EOL;
 }
 

@@ -20,7 +20,11 @@ $titleParts[] = 'BGSU University Libraries';
 
 echo '<title>' . implode(' - ', $titleParts) . '</title>' . PHP_EOL;
 
-if ($description = option('description')) {
+if (!isset($description)) {
+    $description = option('description');
+}
+
+if (isset($description)) {
     echo '<meta name="description" content="';
     echo html_escape($description) . '">' . PHP_EOL;
 }
@@ -28,6 +32,45 @@ if ($description = option('description')) {
 echo '<meta name="viewport" content="';
 echo 'width=device-width, initial-scale=1, shrink-to-fit=no">' . PHP_EOL;
 echo auto_discovery_link_tags() . PHP_EOL;
+
+echo '<meta property="og:url" content="' . absolute_url() . '">' . PHP_EOL;
+echo '<meta property="og:type" content="website">' . PHP_EOL;
+
+if (isset($title)) {
+    echo '<meta property="og:title" content="' . $title . '">' . PHP_EOL;
+}
+
+if (isset($description)) {
+    echo '<meta property="og:description" content="';
+    echo html_escape($description) . '">' . PHP_EOL;
+}
+
+if (isset($image)) {
+    echo '<meta property="og:image" content="' . $image . '">' . PHP_EOL;
+}
+
+if (isset($image)) {
+    echo '<meta name="twitter:card" content="summary_large_image">' . PHP_EOL;
+} else {
+    echo '<meta name="twitter:card" content="summary">' . PHP_EOL;
+}
+
+if ($twitter = get_theme_option('twitter')) {
+    echo '<meta name="twitter:site" content="@' . $twitter . '">' . PHP_EOL;
+}
+
+if (isset($title)) {
+    echo '<meta name="twitter:title" content="' . $title . '">' . PHP_EOL;
+}
+
+if (isset($description)) {
+    echo '<meta name="twitter:description" content="';
+    echo html_escape($description) . '">' . PHP_EOL;
+}
+
+if (isset($image)) {
+    echo '<meta name="twitter:image" content="' . $image . '">' . PHP_EOL;
+}
 
 fire_plugin_hook('public_head', array('view' => $this));
 

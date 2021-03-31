@@ -36,28 +36,30 @@ if ($output) {
     $output .= '</div>' . PHP_EOL;
 }
 
-$file = $item->getFile();
+if (preg_match('/\ssrc="([^"]+)"/', record_image($item, 'fullsize'), $matches)) {
+    $path = $matches[1];
+}
 
-if ($file || $_GET['display'] !== 'list') {
+if (isset($path) || $_GET['display'] !== 'list') {
     $output .= '<div class="record-image"';
 
-    if ($file) {
-        $path = $file->getWebPath('fullsize');
-        
-        if (!empty($aspect)) {
-            $output .= '><img alt=""';
+    if (!isset($path)) {
+        $path = img('fallback-file.png');
+    }
 
-            if (!empty($carousel)) {
-                $output .= ' data-flickity-lazyload="' . $path . '"';
-            } else {
-                $output .= ' src="' . $path . '"';
-            }
+    if (!empty($aspect)) {
+        $output .= '><img alt=""';
+
+        if (!empty($carousel)) {
+            $output .= ' data-flickity-lazyload="' . $path . '"';
         } else {
-            if (!empty($carousel)) {
-                $output .= ' data-flickity-bg-lazyload="' . $path . '"';
-            } else {
-                $output .= ' style="background-image:url(' . $path . ')"';
-            }
+            $output .= ' src="' . $path . '"';
+        }
+    } else {
+        if (!empty($carousel)) {
+            $output .= ' data-flickity-bg-lazyload="' . $path . '"';
+        } else {
+            $output .= ' style="background-image:url(' . $path . ')"';
         }
     }
 
