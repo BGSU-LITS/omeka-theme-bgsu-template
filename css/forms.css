@@ -1,0 +1,54 @@
+.field {
+    margin-bottom: 20px;
+}
+
+.field .alpha {
+    font-weight: bold;
+}
+
+.field .alpha div {
+    font-weight: normal;
+}
+
+.field textarea {
+    vertical-align: bottom;
+}
+
+.field .explanation {
+    display: none;
+}
+
+#flash > ul, #content ul.error {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#flash > ul > li {
+    background: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    line-height: 1.5;
+    margin: 0 0 20px;
+    padding: 4px 8px;
+}
+
+#flash > ul > li.error {
+    background: #fff2f2;
+    border-color: #c00;
+}
+
+#flash > ul > li.success {
+    background: #f2fff2;
+    border-color: #0c0;
+}
+
+#flash > ul > li.alert {
+    background: #fffff2;
+    border-color: #f9f6b8;
+}
+
+
+#content ul.error {
+    color: #c00;
+}
