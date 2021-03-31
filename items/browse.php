@@ -50,6 +50,10 @@ foreach ($_GET as $key => $value) {
                     continue;
                 }
 
+                if (empty($field['type'])) {
+                    $field['type'] = 'contains';
+                }
+
                 if ($field['type'] === 'is empty') {
                     $field['terms'] = '';
                 } elseif ($field['type'] === 'is not empty') {
