@@ -32,9 +32,19 @@ queue_css_string('
 .rights-statements {
     margin: 4px 0 !important;
 }
+
+.flickity-enabled {
+    min-height: 80px;
+}
+
+.flickity-viewport {
+    transition: height 1s ease, opacity 1s ease;
+}
 ');
 
-queue_js_url(BGSU_TEMPLATE . 'flickity.js');
+if (sizeof($item->Files) > 4) {
+    queue_js_url(BGSU_TEMPLATE . 'flickity.js');
+}
 
 $ancestors = array();
 
@@ -100,7 +110,7 @@ foreach ($item->Files as $file) {
     $title = metadata($file, array('Dublin Core', 'Title'));
 
     if (!$title) {
-        $title = __('File %s', $count++);
+        $title = __('File %s', $count);
     }
 
     $description = metadata(
@@ -135,11 +145,13 @@ foreach ($item->Files as $file) {
         $markup
     );
 
-    $markup = preg_replace(
-        '/ src="([^"]+)" /',
-        ' data-flickity-lazyload="$1" aria-hidden="true" ',
-        $markup
-    );
+    if ($count > 4) {
+        $markup = preg_replace(
+            '/ src="([^"]+)" /',
+            ' data-flickity-lazyload="$1" aria-hidden="true" ',
+            $markup
+        );
+    }
 
     $watermark = get_theme_option('watermark_images') !== '0';
 
@@ -165,6 +177,8 @@ foreach ($item->Files as $file) {
     echo $markup;
 
     echo '</div>' . PHP_EOL;
+
+    $count++;
 }
 
 echo '</div>' . PHP_EOL;
