@@ -34,9 +34,7 @@ queue_css_string('
 }
 ');
 
-if (sizeof($item->Files) > 4) {
-    queue_js_url(BGSU_TEMPLATE . 'flickity.js');
-}
+queue_js_url(BGSU_TEMPLATE . 'flickity.js');
 
 $ancestors = array();
 
@@ -120,10 +118,10 @@ foreach ($item->Files as $file) {
             'linkAttributes' => get_theme_option('files_window')
                 ? array('target' => '_blank')
                 : array(),
-            'linkText' => 
+            'linkText' =>
                 '<div class="record-details">' .
                 '<div class="record-title">' . $title . '</div>' .
-                '<div class="record-description">' . 
+                '<div class="record-description">' .
                 text_to_paragraphs($description) . '</div>' .
                 '</div>' .
                 '<img src="' . img('fallback-file.png') . '" alt="">'
@@ -134,6 +132,12 @@ foreach ($item->Files as $file) {
     $markup = preg_replace(
         '/<img [^>]+>/',
         '<div class="record-image">$0</div>',
+        $markup
+    );
+
+    $markup = preg_replace(
+        '/ src="([^"]+)" /',
+        ' data-flickity-lazyload="$1" aria-hidden="true" ',
         $markup
     );
 

@@ -64,12 +64,12 @@ bgsu_template.setup({
             ));
         ?>,
         method: "get",
-        button: "Search",
+        button: <?php echo json_encode(__('Search')); ?>,
         name: "query",
         text: <?php echo json_encode(__('Search Entire Site')); ?>,
         menu: [
             {
-                text: "Advanced Search",
+                text: <?php echo json_encode(__('Advanced Search')); ?>,
                 href: <?php
                     echo json_encode(
                         apply_filters(
@@ -96,9 +96,11 @@ bgsu_template.setup({
 bgsu_template.toggle("[data-toggle^=toggle-]");
 bgsu_tippy.setup("a[title]", {arrow: true, placement: "right"});
 
-if (window.bgsu_flickity) {
-    window.bgsu_flickity.setup(".records", {lazyLoad: 3, bgLazyLoad: 3});
-}
+window.addEventListener('load', function() {
+    if (window.bgsu_flickity) {
+        window.bgsu_flickity.setup(".records", {lazyLoad: 3, bgLazyLoad: 3});
+    }
+});
 <?php
 echo '</script>' . PHP_EOL;
 echo '</body>' . PHP_EOL;
