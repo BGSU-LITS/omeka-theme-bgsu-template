@@ -88,15 +88,18 @@ $getFacetHidden = function ($name) use ($fields, $elements, $config) {
 $facets = array();
 
 foreach (SolrSearch_Helpers_Facet::parseFacets() as $facet) {
-    $html = '<li>' . $facet[1] . '<a class="icon icon-remove" href="';
-    $html .= SolrSearch_Helpers_Facet::removeFacet($facet[0], $facet[1]);
+    $html = '<li>' . html_escape($facet[1]);
+    $html .= '<a class="icon icon-remove" href="';
+    $html .= html_escape(
+        SolrSearch_Helpers_Facet::removeFacet($facet[0], $facet[1])
+    );
 
     if (!empty($collection) && $facet[0] !== 'collection') {
         $html .= '&amp;collection=' . $collection->id;
     }
 
     $html .= '" title="' . __('Remove') . ' ';
-    $html .= $getFacetLabel($facet[0]) . ': ' . $facet[1];
+    $html .= html_escape($getFacetLabel($facet[0]) . ': ' . $facet[1]);
     $html .= '"></a></li>' . PHP_EOL;
 
     $facets[$facet[0]]['added'][$facet[1]] = $html;
@@ -112,17 +115,20 @@ foreach ($results->facet_counts->facet_fields as $name => $items) {
     foreach ($items as $value => $total) {
         if (empty($facets[$name]['added'][$value])) {
             $html = '<li><a title="Add ';
-            $html .= $getFacetLabel($name);
-            $html .= ' ' . $value . '" href="';
-            $html .= SolrSearch_Helpers_Facet::addFacet($name, $value);
+            $html .= html_escape($getFacetLabel($name));
+            $html .= ' ' . html_escape($value) . '" href="';
+            $html .= html_escape(
+                SolrSearch_Helpers_Facet::addFacet($name, $value)
+            );
 
             if (!empty($collection)) {
                 $html .= '&amp;collection=' . $collection->id;
             }
 
             $html .= '">';
-            $html .= $value . '</a> <span class="list-facets-count">';
-            $html .= $total . '</span></li>' . PHP_EOL;
+            $html .= html_escape($value) . '</a> ';
+            $html .= '<span class="list-facets-count">';
+            $html .= html_escape($total) . '</span></li>' . PHP_EOL;
 
             $facets[$name]['other'][$value] = $html;
         }
@@ -137,8 +143,8 @@ foreach (array_keys($facets) as $name) {
     if (!empty($facets[$name]['other'])
      && sizeof($facets[$name]['other']) >= 2) {
         echo '<li class="list-item-toggle">' . PHP_EOL;
-        echo '<button id="facets-top-' . $name . '-toggle"';
-        echo ' data-toggle="facets-top-' . $name . '"';
+        echo '<button id="facets-top-' . html_escape($name) . '-toggle"';
+        echo ' data-toggle="facets-top-' . html_escape($name) . '"';
         echo ' class="toggle-control">';
     } elseif (!empty($facets[$name]['added'])) {
         echo '<li>';
@@ -146,7 +152,7 @@ foreach (array_keys($facets) as $name) {
         continue;
     }
 
-    echo $getFacetLabel($name);
+    echo html_escape($getFacetLabel($name));
 
     if (!empty($facets[$name]['other'])
      && sizeof($facets[$name]['other']) >= 2) {
@@ -169,16 +175,19 @@ foreach (array_keys($facets) as $name) {
 
     if (!empty($facets[$name]['other'])
      && sizeof($facets[$name]['other']) >= 2) {
-        echo '<div id="facets-top-' . $name . '">' . PHP_EOL;
+        echo '<div id="facets-top-' . html_escape($name) . '">' . PHP_EOL;
         echo '<ul class="list-facets list-facets-top">' . PHP_EOL;
 
         foreach ($facets[$name]['other'] as $html) {
             if ($count++ > 5) {
-                echo '<li><button id="facets-all-' . $name . '-toggle"';
-                echo ' data-toggle="facets-all-' . $name . '"';
+                echo '<li><button id="facets-all-';
+                echo html_escape($name) . '-toggle"';
+                echo ' data-toggle="facets-all-';
+                echo html_escape($name) . '"';
                 echo ' class="toggle-control"';
                 echo ' title="' . __('Show More') . ' ';
-                echo $getFacetLabel($name) . ' ' . __('Refinements') . '">';
+                echo html_escape($getFacetLabel($name)) . ' ';
+                echo __('Refinements') . '">';
                 echo __('More') . '</button></li>' . PHP_EOL;
 
                 break;
@@ -188,7 +197,7 @@ foreach (array_keys($facets) as $name) {
         }
 
         echo '</ul>' . PHP_EOL;
-        echo '<ul id="facets-all-' . $name . '"';
+        echo '<ul id="facets-all-' . html_escape($name) . '"';
         echo ' class="list-facets list-facets-all">' . PHP_EOL;
 
         foreach ($facets[$name]['other'] as $html) {
@@ -214,7 +223,7 @@ echo '<div class="records-paginated">' . PHP_EOL;
 if (!empty($results->response->docs)) {
     echo pagination_links();
     echo '<div class="records records-';
-    echo $_GET['display'] . '">' . PHP_EOL;
+    echo html_escape($_GET['display']) . '">' . PHP_EOL;
 
     foreach ($results->response->docs as $result) {
         $highlighting = false;
