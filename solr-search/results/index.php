@@ -90,9 +90,7 @@ $facets = array();
 foreach (SolrSearch_Helpers_Facet::parseFacets() as $facet) {
     $html = '<li>' . html_escape($facet[1]);
     $html .= '<a class="icon icon-remove" href="';
-    $html .= html_escape(
-        SolrSearch_Helpers_Facet::removeFacet($facet[0], $facet[1])
-    );
+    $html .= SolrSearch_Helpers_Facet::removeFacet($facet[0], $facet[1]);
 
     if (!empty($collection) && $facet[0] !== 'collection') {
         $html .= '&amp;collection=' . $collection->id;
@@ -117,9 +115,7 @@ foreach ($results->facet_counts->facet_fields as $name => $items) {
             $html = '<li><a title="Add ';
             $html .= html_escape($getFacetLabel($name));
             $html .= ' ' . html_escape($value) . '" href="';
-            $html .= html_escape(
-                SolrSearch_Helpers_Facet::addFacet($name, $value)
-            );
+            $html .= SolrSearch_Helpers_Facet::addFacet($name, $value);
 
             if (!empty($collection)) {
                 $html .= '&amp;collection=' . $collection->id;
