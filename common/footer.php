@@ -94,7 +94,7 @@ bgsu_template.setup({
 });
 
 bgsu_template.toggle("[data-toggle^=toggle-]");
-bgsu_tippy.setup("a[title]", {arrow: true, placement: "right"});
+bgsu_tippy.setup("a[title]", {allowHTML: false, arrow: true, placement: "right"});
 
 window.addEventListener('load', function() {
     if (window.bgsu_flickity) {
