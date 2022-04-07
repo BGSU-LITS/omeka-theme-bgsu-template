@@ -172,6 +172,12 @@ foreach ($item->Files as $file) {
         }
 
         $markup = preg_replace($preg, $replace, $markup);
+
+        $markup = str_replace(
+            '<a ',
+            '<a referrerpolicy="unsafe-url" ',
+            $markup
+        );
     }
 
     echo $markup;

@@ -89,6 +89,12 @@ if ($watermark && in_array($file->mime_type, $mime_types)) {
     }
 
     $markup = preg_replace($preg, $replace, $markup);
+
+    $markup = str_replace(
+        '<a ',
+        '<a referrerpolicy="unsafe-url" ',
+        $markup
+    );
 }
 
 echo $markup;
