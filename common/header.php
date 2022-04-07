@@ -3,7 +3,6 @@ echo '<!doctype html>' . PHP_EOL;
 echo '<html lang="' . get_html_lang() . '">' . PHP_EOL;
 echo '<head>' . PHP_EOL;
 echo '<meta charset="utf-8">' . PHP_EOL;
-echo '<meta http-equiv="x-ua-compatible" content="ie=edge">' . PHP_EOL;
 
 if (isset($title)) {
     $titleParts[] = $title;
@@ -19,6 +18,17 @@ $titleParts[] = option('site_title');
 $titleParts[] = 'BGSU University Libraries';
 
 echo '<title>' . implode(' - ', $titleParts) . '</title>' . PHP_EOL;
+echo '<script>' . PHP_EOL;
+?>
+(function(s) {
+    s.display = 'none';
+
+    document.addEventListener('DOMContentLoaded', function() {
+        s.display = 'block';
+    });
+})(document.querySelector('html').style);
+<?php
+echo '</script>' . PHP_EOL;
 
 if (!isset($description)) {
     $description = option('description');
