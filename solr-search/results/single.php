@@ -113,7 +113,30 @@ if ($item = get_db()->getTable($result->model)->find($result->modelid)) {
 
     if ($file = $item->getFile()) {
         $path = $file->getWebPath('fullsize');
+    } else {
+        $path = img('fallback.png');
+        $type = $item->getItemType();
 
+        if ($type instanceof ItemType) {
+            if ($type->name === 'Moving Image') {
+                $path = img('fallback-video.png');
+            }
+
+            if ($type->name === 'Sound') {
+                $path = img('fallback-audio.png');
+            }
+
+            if ($type->name === 'Still Image') {
+                $path = img('fallback-image.png');
+            }
+
+            if ($type->name === 'Text') {
+                $path = img('fallback-file.png');
+            }
+        }
+    }
+
+    if ($path) {
         if (!empty($carousel)) {
             $output .= ' data-flickity-bg-lazyload="' . $path . '"';
         } else {

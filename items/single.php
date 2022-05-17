@@ -44,7 +44,26 @@ if (isset($path) || $_GET['display'] !== 'list') {
     $output .= '<div class="record-image"';
 
     if (!isset($path)) {
-        $path = img('fallback-file.png');
+        $path = img('fallback.png');
+        $type = $item->getItemType();
+
+        if ($type instanceof ItemType) {
+            if ($type->name === 'Moving Image') {
+                $path = img('fallback-video.png');
+            }
+
+            if ($type->name === 'Sound') {
+                $path = img('fallback-audio.png');
+            }
+
+            if ($type->name === 'Still Image') {
+                $path = img('fallback-image.png');
+            }
+
+            if ($type->name === 'Text') {
+                $path = img('fallback-file.png');
+            }
+        }
     }
 
     if (!empty($aspect)) {
