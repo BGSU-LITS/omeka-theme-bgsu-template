@@ -231,7 +231,7 @@ if (get_theme_option('social')) {
     echo '<hr>' . PHP_EOL;
     echo '<h3 class="sidebar-title">' . __('Share') . '</h3>' . PHP_EOL;
     echo '<div class="social">' . PHP_EOL;
-    echo '<ul style="margin-bottom:0">';
+    echo '<ul>';
     echo '<li><a href="https://www.facebook.com/sharer.php?u=';
     echo $url . '">Facebook</a></li>' . PHP_EOL;
     echo '<li><a href="https://twitter.com/intent/tweet?url=';

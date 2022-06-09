@@ -89,7 +89,7 @@ get_view()->headScript()
     ->prependFile(BGSU_TEMPLATE . 'template.js')
     ->prependFile(BGSU_TEMPLATE . 'tippy.js');
 
-queue_css_file('forms');
+queue_css_file('style');
 
 echo head_css() . PHP_EOL . head_js(false) . PHP_EOL;
 echo '</head>' . PHP_EOL;

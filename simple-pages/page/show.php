@@ -1,5 +1,5 @@
 <?php
-$ancestors = [];
+$ancestors = array();
 
 if (!$is_home_page) {
     $current = get_current_record('simple_pages_page', false);

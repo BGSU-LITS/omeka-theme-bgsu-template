@@ -32,4 +32,33 @@ if (!empty($_GET['facet'])) {
 }
 
 echo '</div>' . PHP_EOL;
+echo '<div class="flex">' . PHP_EOL;
+
+if (!empty($facet) && !empty($facet_label) && !empty($facet_tags)) {
+    echo '<div>' . PHP_EOL;
+    echo '<label for="solr-facet">';
+    echo html_escape($facet_label) . ':</label>' . PHP_EOL;
+
+    echo '<select id="solr-facet" name="facet">' . PHP_EOL;
+    echo '<option value="">All ';
+    echo html_escape($this->pluralize($facet_label)) . '</option>' . PHP_EOL;
+
+    foreach ($facet_tags as $tag) {
+        echo '<option value="' . html_escape('tag:"' . $tag. '"') . '">';
+        echo html_escape($tag) . '</option>';
+    }
+
+    echo '</select>' . PHP_EOL;
+    echo '</div>' . PHP_EOL;
+}
+
+if (!empty($advanced)) {
+    echo '<div class="text-right">' . PHP_EOL;
+    echo '<a href="';
+    echo apply_filters('items_search_default_url', public_url('items/search'));
+    echo '">' . __('Advanced Search') . '</a>' . PHP_EOL;
+    echo '</div>' . PHP_EOL;
+}
+
+echo '</div>' . PHP_EOL;
 echo '</form>' . PHP_EOL;
