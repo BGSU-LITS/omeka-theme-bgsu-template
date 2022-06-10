@@ -1,12 +1,12 @@
 <?php
-echo '<div id="icons"><div>';
+echo '<div id="icons">';
 echo '<a href="https://icons8.com/icon/5BTv3WK9LLTS/cabinet">Cabinet</a>, ';
 echo '<a href="https://icons8.com/icon/pdgB0Zv9XrcB/exhibit">Exhibit</a>, ';
 echo '<a href="https://icons8.com/icon/11176/library">Library</a>, ';
 echo '<a href="https://icons8.com/icon/DdBNDMCqmCET/media">Media</a>, and ';
 echo '<a href="https://icons8.com/icon/di8TwcqWfMcv/shelf">Shelf</a> icons by ';
 echo '<a target="_blank" href="https://icons8.com">Icons8</a>';
-echo '</div></div>' . PHP_EOL;
+echo '</div>' . PHP_EOL;
 echo '</main>' . PHP_EOL;
 
 fire_plugin_hook('public_footer', array('view' => $this));
