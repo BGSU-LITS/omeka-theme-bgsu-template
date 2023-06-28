@@ -10,7 +10,8 @@ if ($item = get_db()->getTable($result->model)->find($result->modelid)) {
         }
 
         $output .= '<' . $heading . ' class="record-title">';
-        $output .= html_escape($title) . '</' .  $heading . '>' . PHP_EOL;
+        $output .= html_escape(strip_formatting($title));
+        $output .= '</' .  $heading . '>' . PHP_EOL;
     }
 
     $description = '';
@@ -115,7 +116,11 @@ if ($item = get_db()->getTable($result->model)->find($result->modelid)) {
         $path = $file->getWebPath('fullsize');
     } else {
         $path = img('fallback.png');
-        $type = $item->getItemType();
+        $type = null;
+
+        if (method_exists($item, 'getItemType')) {
+            $type = $item->getItemType();
+        }
 
         if ($type instanceof ItemType) {
             if ($type->name === 'Moving Image') {
