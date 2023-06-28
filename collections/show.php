@@ -23,12 +23,12 @@ echo '<div>' . PHP_EOL;
 
 $description = metadata('collection', array('Dublin Core', 'Description'));
 
-if ($description) {
-    if (strpos($description, '<p>') === false) {
-        echo '<p>' . $description . '</p>' . PHP_EOL;
-    } else {
-        echo $description . PHP_EOL;
-    }
+if ($description && strpos($description, '<p>') === false) {
+    $description = '<p>' . $description . '</p>';
+}
+        
+if ($description && !get_theme_option('featured_first')) {
+    echo $description . PHP_EOL;
 }
 
 $featured = get_records(
@@ -69,6 +69,10 @@ if (!empty($featured)) {
 
     echo '</div>' . PHP_EOL;
     echo '</div>' . PHP_EOL;
+}
+
+if ($description && get_theme_option('featured_first')) {
+    echo $description . PHP_EOL;
 }
 
 fire_plugin_hook(
