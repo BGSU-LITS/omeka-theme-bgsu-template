@@ -19,9 +19,7 @@ if ($html = get_theme_option('homepage_html')) {
     echo '<p class="text-lead">' . $description . '</p>' . PHP_EOL;
 }
 
-$featured = true;
-
-if ($featured) {
+if ($style === 'default') {
     $item = get_record('Item', array(
         'hasImage' => true,
         'sort_field' => 'random',
@@ -229,25 +227,28 @@ foreach ($types_display as $type => $data) {
     }
 }
 
-$groups = array(
-    'topics',
-    'formats',
-    'collections',
-    'exhibits',
-    'repositories'
-);
+if ($style === 'default') {
+    $groups = array(
+        'topics',
+        'formats',
+        'collections',
+        'exhibits',
+        'repositories'
+    );
 
-if ($groups) {
-    echo '<h2>' . __('Explore our content through…') . '</h2>' . PHP_EOL;
-    echo '<div id="groups">' . PHP_EOL;
+    if ($groups) {
+        echo '<div id="groups-container">' . PHP_EOL;
+        echo '<h2>' . __('Explore our content through…') . '</h2>' . PHP_EOL;
+        echo '<div id="groups">';
 
-    foreach ($groups as $group) {
-        echo '<a href="' . $group . '">';
-        echo '<img src="' . img('group-' . $group . '.png') . '">';
-        echo ucwords($group) . '</a>' . PHP_EOL;
+        foreach ($groups as $group) {
+            echo '<a href="' . $group . '">';
+            echo '<img src="' . img('group-' . $group . '.png') . '">';
+            echo ucwords($group) . '</a>' . PHP_EOL;
+        }
+
+        echo '</div>';
     }
-
-    echo '</div>';
 }
 
 fire_plugin_hook('public_home', array('view' => $this));
