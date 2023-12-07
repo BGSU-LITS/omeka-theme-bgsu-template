@@ -119,6 +119,10 @@ foreach ($item->Files as $file) {
         array('snippet' => 300, 'no_escape' => true)
     );
 
+    if ($description) {
+        $description = text_to_paragraphs($description);
+    }
+
     $markup = file_markup(
         $file,
         array(
@@ -131,8 +135,7 @@ foreach ($item->Files as $file) {
             'linkText' =>
                 '<div class="record-details">' .
                 '<div class="record-title">' . $title . '</div>' .
-                '<div class="record-description">' .
-                text_to_paragraphs($description) . '</div>' .
+                '<div class="record-description">' . $description . '</div>' .
                 '</div>' .
                 '<img src="' . img('fallback-file.png') . '" alt="">'
         ),

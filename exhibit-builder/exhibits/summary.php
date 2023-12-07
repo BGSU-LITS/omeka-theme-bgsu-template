@@ -36,7 +36,8 @@ echo '<div>';
 echo '</div>';
 echo '<div>';
 
-$nextPage = reset($exhibit->getTopPages());
+$pages = $exhibit->getTopPages();
+$nextPage = reset($pages);
 
 if ($nextPage) {
     $text = '<div class="nav-page-next">';
