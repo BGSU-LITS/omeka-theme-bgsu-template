@@ -5,6 +5,35 @@ queue_css_string('
     text-indent: -20px;
     line-height: 1.5;
 }
+
+#content .field {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    color: inherit;
+    cursor: inherit;
+    display: block;
+    line-height: inherit;
+    margin: 0 0 20px 0;
+    padding: 0;
+}
+
+#content .field .button {
+    font-size: 0.875em;
+    line-height: 18px;
+    margin-top: 4px;
+    padding: 0 6px;
+}
+
+#content .field .field-meta {
+    margin: 0;
+}
+
+#content .field .field-meta label,
+#content .field .field-meta .label {
+    font-weight: bold;
+}
 ');
 
 echo head(array('title' => 'Contribute an Item'));
@@ -15,12 +44,12 @@ if (!($user = current_user()) && !get_option('contribution_open')) {
     $session->redirect = absolute_url();
 
     echo '<p><a href="' . url('guest-user/user/register') . '">';
-    echo get_option('guest_user_register_text') 
+    echo get_option('guest_user_register_text')
         ? get_option('guest_user_register_text')
         : __('Register');
     echo '</a>' . __(' or ');
     echo '<a href="' . url('guest-user/user/login') . '">';
-    echo get_option('guest_user_login_text') 
+    echo get_option('guest_user_login_text')
         ? get_option('guest_user_login_text')
         : __('Log In');
     echo '</a>' . __(' to continue.');
@@ -33,7 +62,7 @@ if (!($user = current_user()) && !get_option('contribution_open')) {
         echo '<label for="contribution-type">';
         echo __("What type of item do you want to contribute?");
         echo '</label><br>';
-    
+
         echo $this->formSelect(
             'contribution_type',
             isset($type) ? $type->id : '',
@@ -56,20 +85,20 @@ if (!($user = current_user()) && !get_option('contribution_open')) {
 
         echo '<div class="field">';
         echo $this->formHidden(
-            'contribution-public', 
-            isset($_POST['contribution-public']) 
-                ? $_POST['contribution-public'] 
+            'contribution-public',
+            isset($_POST['contribution-public'])
+                ? $_POST['contribution-public']
                 : 1
         );
 
         echo '<div>';
 
         echo $this->formCheckbox(
-            'contribution-anonymous', 
-            isset($_POST['contribution-anonymous']) 
-                ? $_POST['contribution-anonymous'] 
-                : 0, 
-            null, 
+            'contribution-anonymous',
+            isset($_POST['contribution-anonymous'])
+                ? $_POST['contribution-anonymous']
+                : 0,
+            null,
             array(1, 0)
         );
 
@@ -89,7 +118,7 @@ if (!($user = current_user()) && !get_option('contribution_open')) {
             null,
             array('1', '0')
         );
-                        
+
         echo '<label for="terms-agree">';
         echo get_option('contribution_consent_text');
         echo '</label>';
@@ -98,9 +127,9 @@ if (!($user = current_user()) && !get_option('contribution_open')) {
         if (isset($captchaScript)) {
             echo '<div id="captcha">' . $captchaScript . '</div>';
         }
-        
+
         echo $this->formSubmit(
-            'form-submit', 
+            'form-submit',
             __('Contribute'),
             array('class' => 'button button-primary')
         );

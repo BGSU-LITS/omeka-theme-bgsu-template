@@ -120,7 +120,7 @@ if ($loop !== 'Results') {
     if (empty($sortName)) {
         $sortParam = strtolower($queryParams[Omeka_Db_Table::SORT_PARAM]);
 
-        if (preg_match('/^[a-z, ]+$/', $sortParam)) {
+        if ($sortParam && preg_match('/^[a-z, ]+$/', $sortParam)) {
             list($sortClass, $sortName) = explode(
                 ',',
                 strtolower($queryParams[Omeka_Db_Table::SORT_PARAM]),

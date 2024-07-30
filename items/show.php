@@ -250,7 +250,7 @@ if (get_theme_option('social')) {
 if (metadata('item', 'has tags')) {
     $tags = tag_string('item');
 
-    if ($collection) {
+    if (!empty($collection)) {
         $tags = str_replace(
             '?',
             '?collection=' . $collection->id . '&amp;',
