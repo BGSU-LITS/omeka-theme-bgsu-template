@@ -91,7 +91,7 @@ get_view()->headScript()
 
 queue_css_file('style');
 
-echo head_css() . PHP_EOL . head_js(false) . PHP_EOL;
+echo head_css() . PHP_EOL . head_js() . PHP_EOL;
 echo '</head>' . PHP_EOL;
 
 echo body_tag(array('id' => @$bodyid, 'class' => @$bodyclass));

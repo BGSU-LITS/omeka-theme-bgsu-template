@@ -43,7 +43,7 @@ echo exhibit_builder_render_exhibit_page();
 
 if (get_theme_option('exhibit_nav_subpages')) {
     if ($children = exhibit_builder_child_pages()) {
-        echo '<ul>';
+        echo '<ul style="clear:both">';
 
         foreach ($children as $child) {
             echo '<li>';

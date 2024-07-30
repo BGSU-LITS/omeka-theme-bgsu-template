@@ -1,6 +1,11 @@
 <?php
-if (!isset($_GET['display']) || $_GET['display'] !== 'list') {
-    $_GET['display'] = 'gallery';
+$style = get_theme_option('style');
+
+if (
+    !isset($_GET['display']) ||
+    !in_array($_GET['display'], ['list', 'gallery'])
+) {
+    $_GET['display'] = $style === 'default' ? 'gallery' : 'list';
 }
 
 $repositories = array(
@@ -45,33 +50,36 @@ echo $this->partial(
 
 echo '<br>' . PHP_EOL;
 
-echo '<h3 class="sidebar-title">';
+if ($style === 'default') {
+    echo '<h3 class="sidebar-title">';
 
-if (isset($_GET['tag']) && isset($repositories[$_GET['tag']])) {
-    echo __('Other Repositories');
-} else {
-    echo __('Limit By Repository');
-}
-
-echo '</h3>' . PHP_EOL;
-echo '<ul>' . PHP_EOL;
-
-foreach ($repositories as $repository => $slug) {
-    if (isset($_GET['tag']) && $_GET['tag'] === $repository) {
-        continue;
+    if (isset($_GET['tag']) && isset($repositories[$_GET['tag']])) {
+        echo __('Other Repositories');
+    } else {
+        echo __('Limit By Repository');
     }
 
-    echo '<li><a href="';
-    echo url('exhibits', array('tag' => $repository)) . '">';
-    echo html_escape($repository) . '</a></li>' . PHP_EOL;
+    echo '</h3>' . PHP_EOL;
+    echo '<ul>' . PHP_EOL;
+
+    foreach ($repositories as $repository => $slug) {
+        if (isset($_GET['tag']) && $_GET['tag'] === $repository) {
+            continue;
+        }
+
+        echo '<li><a href="';
+        echo url('exhibits', array('tag' => $repository)) . '">';
+        echo html_escape($repository) . '</a></li>' . PHP_EOL;
+    }
+
+    if (isset($_GET['tag']) && isset($repositories[$_GET['tag']])) {
+        echo '<li><a href="' . url('exhibits') . '">';
+        echo __('View All Exhibits') . '</a></li>' . PHP_EOL;
+    }
+
+    echo '</ul>' . PHP_EOL;
 }
 
-if (isset($_GET['tag']) && isset($repositories[$_GET['tag']])) {
-    echo '<li><a href="' . url('exhibits') . '">';
-    echo __('View All Exhibits') . '</a></li>' . PHP_EOL;
-}
-
-echo '</ul>' . PHP_EOL;
 echo '</div>' . PHP_EOL;
 echo '<div>' . PHP_EOL;
 

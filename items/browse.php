@@ -9,12 +9,11 @@ queue_js_url(BGSU_TEMPLATE . 'facets.js');
 
 $style = get_theme_option('style');
 
-if ($style === 'finding_aids' && !isset($_GET['display'])) {
-    $_GET['display'] = 'list';
-}
-
-if (!isset($_GET['display']) || $_GET['display'] !== 'list') {
-    $_GET['display'] = 'gallery';
+if (
+    !isset($_GET['display']) ||
+    !in_array($_GET['display'], ['list', 'gallery'])
+) {
+    $_GET['display'] = $style === 'default' ? 'gallery' : 'list';
 }
 
 $ancestors = array();

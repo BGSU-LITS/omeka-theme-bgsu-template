@@ -1,5 +1,6 @@
 <?php
 $css = get_theme_option('exhibit_style');
+$img = get_theme_option('exhibit_logo');
 
 $css .= '
 .nav-exhibit {
@@ -29,8 +30,7 @@ $css .= '
 }
 ';
 
-
-if ($exhibit->use_summary_page) {
+if ($exhibit->use_summary_page && !$img) {
     $css .= '
 .nav-exhibit-content .active:first-child {
     font-weight: normal;
@@ -43,7 +43,7 @@ if (!empty(trim($css))) {
 }
 
 if ($topPages = $exhibit->getTopPages()) {
-    if ($exhibit->use_summary_page) {
+    if ($exhibit->use_summary_page && !$img) {
         $nav = array(
             array(
                 'label' => 'Introduction',
@@ -70,7 +70,20 @@ if ($topPages = $exhibit->getTopPages()) {
     }
 
     echo '<nav class="' . $class . '" aria-label="exhibit">';
-    echo '<strong>Exhibit Contents</strong>';
+
+    if ($img) {
+        $storage = Zend_Registry::get('storage');
+        $uri = $storage->getUri(
+            $storage->getPathByType($img, 'theme_uploads')
+        );
+
+        echo '<a href="' . exhibit_builder_exhibit_uri($exhibit) . '">';
+        echo '<img class="nav-exhibit-logo" src="' . html_escape($uri);
+        echo '" alt="' . metadata($exhibit, 'title') . '"></a>';
+    } else {
+        echo '<strong>Exhibit Contents</strong>';
+    }
+
     echo nav($nav)->setUlClass('list-inline');
     echo '</nav>';
 }

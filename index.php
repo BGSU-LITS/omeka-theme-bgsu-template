@@ -32,6 +32,11 @@ header form {
     display: none;
 }
 
+#content > div {
+    height: 100%;
+    padding-bottom: 50px;
+}
+
 #featured {
     margin: 0 0 20px 0;
 }
@@ -153,18 +158,37 @@ $params = array(
     'sort_dir' => 'd'
 );
 
+$limit = 50;
+
 if ($style === 'finding_aids') {
     $params['sort_field'] = 'Dublin Core,title';
     $params['sort_dir'] = 'a';
 }
 
+if ($style === 'student') {
+    $params['sort_field'] = 'random';
+    $limit = 6;
+
+    echo '<style>' . PHP_EOL;
+?>
+#content .records-gallery .record {
+    width: 100%;
+}
+
+@media screen and (min-width: 980px) {
+    #content .records-gallery .record {
+        width: 50%;
+    }
+}
+<?php
+    echo '</style>' . PHP_EOL;
+}
+
 foreach ($types_display as $type => $data) {
-    $records = get_records(ucwords($type), $params, 50);
+    $records = get_records(ucwords($type), $params, $limit);
 
     if (!empty($records)) {
-        if ($style === 'finding_aids') {
-            echo '<div>';
-        } else {
+        if ($style === 'default') {
             $plural = $this->pluralize($type);
             $href = $plural;
 
@@ -200,6 +224,11 @@ foreach ($types_display as $type => $data) {
             }
 
             echo '</h2>' . PHP_EOL;
+        }
+
+        if ($style === 'finding_aids') {
+            echo '<div>';
+        } else {
             echo '<div class="records records-gallery">' . PHP_EOL;
         }
 
@@ -210,13 +239,13 @@ foreach ($types_display as $type => $data) {
                 array(
                     $type => $record,
                     'carousel' => $carousel,
-                    'heading' => $style === 'finding_aids' ? 'h2' : 'h3',
+                    'heading' => $style === 'default' ? 'h3' : 'h2',
                     'style' => $style
                 )
             );
         }
 
-        if ($style !== 'finding_aids') {
+        if ($style === 'default') {
             echo '<div class="record"><a href="'. $href . '">';
             echo '<div class="record-details"><h3 class="record-title">';
             echo __('See All ' . ucwords($plural)) . '</h3></div>';
@@ -252,5 +281,18 @@ if ($style === 'default') {
 }
 
 fire_plugin_hook('public_home', array('view' => $this));
+
+if ($style === 'default') {
+?>
+<div id="icons">
+<a href="https://icons8.com/icon/5BTv3WK9LLTS/cabinet">Cabinet</a>,
+<a href="https://icons8.com/icon/pdgB0Zv9XrcB/exhibit">Exhibit</a>,
+<a href="https://icons8.com/icon/11176/library">Library</a>,
+<a href="https://icons8.com/icon/DdBNDMCqmCET/media">Media</a>, and
+<a href="https://icons8.com/icon/di8TwcqWfMcv/shelf">Shelf</a> icons by
+<a target="_blank" href="https://icons8.com">Icons8</a>
+</div>
+<?php
+}
 
 echo foot(array('home' => true));
