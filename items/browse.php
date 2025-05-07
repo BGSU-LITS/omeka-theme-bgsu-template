@@ -8,12 +8,13 @@ $config = Symfony\Component\Yaml\Yaml::parse(
 queue_js_url(BGSU_TEMPLATE . 'facets.js');
 
 $style = get_theme_option('style');
+$display = get_theme_option('display');
 
 if (
     !isset($_GET['display']) ||
     !in_array($_GET['display'], ['list', 'gallery'])
 ) {
-    $_GET['display'] = $style === 'default' ? 'gallery' : 'list';
+    $_GET['display'] = $style === 'default' || $display ? 'gallery' : 'list';
 }
 
 $ancestors = array();
